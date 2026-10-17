@@ -1,0 +1,1785 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Semestre UOC 2026-1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap">
+<style>
+:root{
+  --bg:#F1F3F7; --surface:#FFFFFF; --surface-2:#E8ECF2; --ink:#131A25; --muted:#566172; --faint:#7E8898; --rule:#D6DCE5;
+  --fp:#2E50C9; --fp-soft:#E2E8FA; --cc:#963587; --cc-soft:#F4E3F0; --is:#0A7384; --is-soft:#DDF1F3; --lg:#B4500F; --lg-soft:#FBE8DA;
+  --ok:#1B7C46; --ok-soft:#DDF1E4; --warn:#94590A; --warn-soft:#FAEED6; --crit:#BD322D; --crit-soft:#FAE1DF;
+  --today:#131A25; --on-accent:#FFFFFF;
+  --sans:"Schibsted Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0D1219; --surface:#141B26; --surface-2:#1B2431; --ink:#E3E8F0; --muted:#9AA5B6; --faint:#737F91; --rule:#273244;
+    --fp:#8AA4FF; --fp-soft:#1D2849; --cc:#DD90D2; --cc-soft:#361F34; --is:#55C9D8; --is-soft:#123239; --lg:#F2A064; --lg-soft:#3A2415;
+    --ok:#56C68D; --ok-soft:#153325; --warn:#E5B35A; --warn-soft:#382B13; --crit:#F2837C; --crit-soft:#3E1C1B;
+    --today:#E3E8F0; --on-accent:#0D1219;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0D1219; --surface:#141B26; --surface-2:#1B2431; --ink:#E3E8F0; --muted:#9AA5B6; --faint:#737F91; --rule:#273244;
+  --fp:#8AA4FF; --fp-soft:#1D2849; --cc:#DD90D2; --cc-soft:#361F34; --is:#55C9D8; --is-soft:#123239; --lg:#F2A064; --lg-soft:#3A2415;
+  --ok:#56C68D; --ok-soft:#153325; --warn:#E5B35A; --warn-soft:#382B13; --crit:#F2837C; --crit-soft:#3E1C1B;
+  --today:#E3E8F0; --on-accent:#0D1219;
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;margin:0;padding:0}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:20px;padding-block:32px 72px;display:flex;flex-direction:column;gap:40px}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--fp);outline-offset:2px;border-radius:4px}
+.mono{font-family:var(--mono)}
+.c-fp{color:var(--fp)} .c-cc{color:var(--cc)} .c-is{color:var(--is)} .c-lg{color:var(--lg)} .c-personal{color:var(--muted)}
+
+/* Header */
+.top{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:clamp(32px,5.4vw,48px);font-weight:800;letter-spacing:-.025em;line-height:1.05}
+.sub{color:var(--muted);max-width:70ch}
+.sub b{font-weight:600}
+.meta-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;margin-top:6px;font-size:13px;color:var(--muted)}
+.weekbar{display:flex;align-items:center;gap:10px}
+.meter{width:120px;height:6px;border-radius:99px;background:var(--surface-2);overflow:hidden;display:block}
+.meter i{display:block;height:100%;background:var(--ink);border-radius:99px}
+.save{font-family:var(--mono);font-size:12px}
+.save.bad{color:var(--crit)}
+
+/* Panels */
+.duo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.label{font-family:var(--mono);font-size:11.5px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.subj{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.04em}
+
+.urgent{display:flex;gap:10px;align-items:flex-start;background:var(--warn-soft);color:var(--ink);border-radius:10px;padding:10px 12px;font-size:13.5px}
+.urgent b{color:var(--warn)}
+.next-title{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.next-title b{font-size:22px;font-weight:700;letter-spacing:-.01em}
+.next-title span{color:var(--muted);font-size:14px}
+.count{display:flex;align-items:baseline;gap:10px}
+.big{font-size:60px;font-weight:800;letter-spacing:-.04em;line-height:.95;font-variant-numeric:tabular-nums}
+.count small{font-size:15px;color:var(--muted);max-width:18ch;line-height:1.3}
+.facts{display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--muted)}
+.facts b{color:var(--ink);font-weight:600}
+.queue{list-style:none;margin:0;padding:12px 0 0;border-top:1px solid var(--rule);display:flex;flex-direction:column;gap:8px}
+.queue li{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:10px;align-items:baseline;font-size:14px}
+.queue .when{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.queue .what{min-width:0}
+.queue .what small{color:var(--muted)}
+
+.how{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 16px;align-items:center;text-align:left;background:none;border:0;border-top:1px solid var(--rule);padding:14px 0 4px;cursor:pointer;width:100%}
+.how:first-of-type{border-top:0;padding-top:0}
+.how:hover .how-name{text-decoration:underline;text-underline-offset:3px}
+.how-name{font-weight:700;font-size:15.5px;letter-spacing:-.005em}
+.how-grade{grid-row:span 2;text-align:right;display:flex;flex-direction:column;align-items:flex-end}
+.how-grade b{font-size:32px;font-weight:800;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.how-grade small{font-size:12px;color:var(--muted);white-space:nowrap}
+.how-prog{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+.how .meter{width:100px}
+.how[data-s="fp"] .meter i{background:var(--fp)}
+.how[data-s="cc"] .meter i{background:var(--cc)}
+.how[data-s="is"] .meter i{background:var(--is)}
+.how[data-s="lg"] .meter i{background:var(--lg)}
+
+/* Sections */
+.sec{display:flex;flex-direction:column;gap:14px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px 16px;flex-wrap:wrap}
+h2{font-size:21px;font-weight:700;letter-spacing:-.01em}
+h3{font-size:18px;font-weight:700;letter-spacing:-.005em}
+.aside{font-size:13px;color:var(--muted)}
+.legend{display:flex;gap:14px;font-size:12.5px;color:var(--muted);flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.legend .lt{width:2px;height:12px;border-radius:0;background:var(--today)}
+
+/* Timeline */
+.tl-scroll{overflow-x:auto;background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:16px 18px 10px}
+.tl{display:grid;grid-template-columns:54px minmax(0,1fr);column-gap:10px;min-width:360px}
+.tl-labels,.tl-body{display:grid;grid-template-rows:18px repeat(8,22px) 22px 20px;row-gap:6px}
+.tl-labels span{font-family:var(--mono);font-size:10.5px;font-weight:700;align-self:center;white-space:nowrap}
+.tl-body{position:relative}
+.axis{position:relative}
+.tick{position:absolute;top:0;height:18px;border-left:1px solid var(--rule);padding-left:4px;font-family:var(--mono);font-size:11px;color:var(--muted);line-height:18px;white-space:nowrap}
+.tick.end{border-left:0;border-right:1px solid var(--rule);padding-left:0;padding-right:4px;transform:translateX(-100%)}
+.track{position:relative;background:var(--surface-2);border-radius:6px}
+.bar{position:absolute;top:3px;bottom:3px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10.5px;font-weight:700;text-decoration:none;min-width:14px;cursor:pointer;transition:filter .15s;overflow:hidden}
+.bar:hover{filter:brightness(1.08)}
+.bar.fp{background:var(--fp-soft);color:var(--fp);box-shadow:inset 0 0 0 1.5px var(--fp)}
+.bar.cc{background:var(--cc-soft);color:var(--cc);box-shadow:inset 0 0 0 1.5px var(--cc)}
+.bar.is{background:var(--is-soft);color:var(--is);box-shadow:inset 0 0 0 1.5px var(--is)}
+.bar.lg{background:var(--lg-soft);color:var(--lg);box-shadow:inset 0 0 0 1.5px var(--lg)}
+.bar.fp.done{background:var(--fp);color:var(--on-accent)}
+.bar.cc.done{background:var(--cc);color:var(--on-accent)}
+.bar.is.done{background:var(--is);color:var(--on-accent)}
+.bar.lg.done{background:var(--lg);color:var(--on-accent)}
+.bar.late{background:var(--crit-soft);color:var(--crit);box-shadow:inset 0 0 0 1.5px var(--crit)}
+.tbd{position:absolute;top:0;bottom:0;display:flex;align-items:center;font-family:var(--mono);font-size:10.5px;color:var(--faint);white-space:nowrap;transform:translateX(-50%)}
+.today{position:absolute;top:24px;height:246px;border-left:2px solid var(--today);pointer-events:none}
+.today span{position:absolute;top:252px;left:0;transform:translateX(-50%);font-family:var(--mono);font-size:10.5px;font-weight:700;background:var(--surface);padding:0 3px;white-space:nowrap}
+.today.edge-l span{transform:translateX(-2px)}
+.today.edge-r span{transform:translateX(-100%)}
+.loadrow{position:relative}
+.wk{position:absolute;top:0;bottom:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10.5px;font-weight:700;border-radius:4px;box-shadow:inset 0 0 0 1px var(--surface);background:var(--surface-2);color:var(--faint)}
+.wk.l2{background:var(--warn-soft);color:var(--warn)}
+.wk.l3{background:var(--crit-soft);color:var(--crit)}
+.wk.l4{background:var(--crit);color:var(--on-accent)}
+
+/* Tabs */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--rule);overflow-x:auto}
+.tab{background:none;border:0;padding:10px 14px 12px;font-weight:700;font-size:15px;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px;white-space:nowrap;display:flex;align-items:baseline;gap:8px}
+.tab .subj{font-weight:500}
+.tab[aria-selected="true"]{color:var(--ink)}
+.tab[data-s="fp"][aria-selected="true"]{border-bottom-color:var(--fp)}
+.tab[data-s="cc"][aria-selected="true"]{border-bottom-color:var(--cc)}
+.tab[data-s="is"][aria-selected="true"]{border-bottom-color:var(--is)}
+.tab[data-s="lg"][aria-selected="true"]{border-bottom-color:var(--lg)}
+.subject{display:flex;flex-direction:column;gap:28px;padding-top:24px}
+.subj-head{display:flex;flex-direction:column;gap:8px}
+.subj-head h2{font-size:clamp(24px,3.6vw,30px);font-weight:800;letter-spacing:-.02em}
+
+/* Grade panel */
+.code{font-family:var(--mono);font-size:13px;line-height:1.7;background:var(--surface-2);border-radius:8px;padding:10px 14px;overflow-x:auto;white-space:pre;color:var(--muted)}
+.code .v{color:var(--ink);font-weight:700}
+.code .k{font-weight:700}
+.code .cm{color:var(--faint)}
+[data-s="fp"] .code .k{color:var(--fp)} [data-s="cc"] .code .k{color:var(--cc)} [data-s="is"] .code .k{color:var(--is)} [data-s="lg"] .code .k{color:var(--lg)}
+.grade-row{display:flex;align-items:flex-end;gap:20px 24px;flex-wrap:wrap}
+.grade-main{display:flex;flex-direction:column;gap:6px}
+.grade-main small{color:var(--muted);font-size:13px;max-width:24ch}
+.blocks{display:flex;gap:20px;flex-wrap:wrap;margin-left:auto}
+.blk{display:flex;flex-direction:column;gap:2px;font-size:12.5px;color:var(--muted)}
+.blk b{font-size:24px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.need{font-size:14px;color:var(--muted);border-top:1px solid var(--rule);padding-top:12px}
+.need b{color:var(--ink)}
+
+.reqs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.req{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:12px 0;border-top:1px solid var(--rule)}
+.req:first-child{border-top:0;padding-top:0}
+.req code{font-family:var(--mono);font-size:13px;font-weight:700;overflow-wrap:anywhere}
+.req p{grid-column:1 / -1;font-size:13.5px;color:var(--muted)}
+.req p b{color:var(--ink)}
+
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:2px 9px;border-radius:99px;background:var(--surface-2);color:var(--muted);white-space:nowrap;align-self:start}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.crit{background:var(--crit-soft);color:var(--crit)}
+[data-s="fp"] .pill.open{background:var(--fp-soft);color:var(--fp)}
+[data-s="cc"] .pill.open{background:var(--cc-soft);color:var(--cc)}
+[data-s="is"] .pill.open{background:var(--is-soft);color:var(--is)}
+[data-s="lg"] .pill.open{background:var(--lg-soft);color:var(--lg)}
+
+/* Activity list */
+.acts{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--rule);border-radius:14px;overflow:hidden}
+.act{display:grid;grid-template-columns:70px minmax(0,1.3fr) minmax(0,1.45fr) 80px 96px;grid-template-areas:"id when parts grade weight";gap:16px;align-items:center;padding:14px 20px;border-top:1px solid var(--rule);scroll-margin-top:24px;transition:background .6s}
+.act:first-child{border-top:0}
+.act.flash{background:var(--surface-2);transition:none}
+.act-id{grid-area:id;display:flex;align-items:baseline;gap:5px}
+.act-id .tag{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.04em}
+.act-id .num{font-size:26px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.act-id .num.sm{font-size:20px}
+.act[data-s="fp"] .act-id{color:var(--fp)}
+.act[data-s="cc"] .act-id{color:var(--cc)}
+.act[data-s="is"] .act-id{color:var(--is)}
+.act[data-s="lg"] .act-id{color:var(--lg)}
+.act-when{grid-area:when;display:flex;flex-direction:column;align-items:flex-start;gap:5px;min-width:0}
+.dates{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
+.dates .arrow{color:var(--faint);padding:0 4px}
+.datefield{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);font-family:var(--mono)}
+.datefield input{font-family:var(--mono);font-size:12.5px;padding:4px 6px;border:1px solid var(--rule);border-radius:6px;background:var(--bg);color:var(--ink)}
+.act-parts{grid-area:parts;display:flex;flex-wrap:wrap;gap:6px 18px}
+.act-parts .note{font-size:13px;color:var(--muted);max-width:44ch}
+.chk{display:inline-flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;user-select:none}
+.chk input{width:17px;height:17px;margin:0;cursor:pointer;flex:none}
+[data-s="fp"] .chk input{accent-color:var(--fp)}
+[data-s="cc"] .chk input{accent-color:var(--cc)}
+[data-s="is"] .chk input{accent-color:var(--is)}
+[data-s="lg"] .chk input{accent-color:var(--lg)}
+.chk input:checked + span{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--faint)}
+.act-grade{grid-area:grade;display:flex;flex-direction:column;gap:3px}
+.act-grade label{font-size:11px;color:var(--muted);font-family:var(--mono);letter-spacing:.04em;text-transform:uppercase}
+.act-grade input{width:64px;font-family:var(--mono);font-size:15px;font-weight:700;text-align:center;padding:6px 4px;border:1px solid var(--rule);border-radius:8px;background:var(--bg);color:var(--ink)}
+.act-grade input::placeholder{color:var(--faint);font-weight:400}
+.act-grade input[aria-invalid="true"]{border-color:var(--crit);background:var(--crit-soft)}
+.pg{display:inline-flex;align-items:center;gap:8px}
+.pg .pin{width:46px;font-family:var(--mono);font-size:13px;font-weight:700;text-align:center;padding:3px 2px;border:1px solid var(--rule);border-radius:7px;background:var(--bg);color:var(--ink)}
+.pg .plt{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--muted);min-width:18px}
+.pg .pin::placeholder{color:var(--faint);font-weight:400}
+.pg .pin[aria-invalid="true"]{border-color:var(--crit);background:var(--crit-soft)}
+.act-weight{grid-area:weight;text-align:right;font-family:var(--mono);font-size:15px;font-weight:700;font-variant-numeric:tabular-nums}
+.act-weight small{display:block;font-family:var(--sans);font-size:11.5px;font-weight:400;color:var(--muted)}
+
+.temario{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.temario .chk{padding:7px 0;width:100%;align-items:flex-start}
+.temario .chk input{accent-color:var(--ink);margin-top:2px}
+.temario .n{font-family:var(--mono);font-size:11px;color:var(--faint);display:inline-block;min-width:26px}
+.rules{display:flex;flex-direction:column;gap:14px;margin:0}
+.rules div{display:flex;flex-direction:column;gap:2px}
+.rules dt{font-weight:700;font-size:14.5px}
+.rules dd{margin:0;color:var(--muted);font-size:14px}
+.agenda{display:flex;flex-direction:column;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--rule)}
+.evlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.evlist li{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:10px;align-items:baseline;font-size:14px}
+.evlist small{color:var(--muted)}
+.evlist .when{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap}
+.evsec .evlist{background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:14px 18px}
+.evdot{position:absolute;top:5px;width:8px;height:8px;border-radius:1px;transform:translateX(-50%) rotate(45deg)}
+.plan{display:flex;flex-direction:column;gap:12px}
+.week{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.day{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:10px 10px 12px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.day .dn{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.03em;white-space:nowrap}
+.day .ab{font-family:var(--mono);font-size:20px;font-weight:700;line-height:1.15}
+.day .nm{font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.day.past{opacity:.5}
+.day .ab.multi{font-size:14px;display:flex;flex-wrap:wrap;gap:0 6px;line-height:1.45}
+.day.is-today{border-width:2px;padding:9px 9px 11px}
+.day.is-today .dn{color:var(--ink);font-weight:700}
+.todayline{font-size:15px;color:var(--muted)}
+.todayline b{font-weight:700}
+@media (max-width:560px){ .day .ab.multi{font-size:10.5px;justify-content:center;gap:0 3px} .week{gap:5px} .day{padding:8px 6px 9px;align-items:center} .day.is-today{padding:7px 5px 8px} .day .nm{display:none} .day .ab{font-size:15px} .day .dn{font-size:10px} }
+.hplan{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.hplan-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px 16px;flex-wrap:wrap}
+.hrows{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--rule);border-radius:14px;overflow:hidden}
+.hrow{display:grid;grid-template-columns:100px minmax(0,1fr);gap:12px;align-items:baseline;padding:9px 16px;border-top:1px solid var(--rule);font-size:14px}
+.hrow:first-child{border-top:0}
+.hrow .hr{font-family:var(--mono);font-size:12.5px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.hrow .tx{color:var(--muted)}
+.hrow.t-estudio .tx,.hrow.t-sesion .tx{color:var(--ink);font-weight:600}
+.hrow.t-repaso .tx{color:var(--ink)}
+.hrow .kind{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-right:8px}
+.hrow.now{background:var(--surface-2)}
+.hrow .nowpill{margin-left:8px}
+.allplan{background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:12px 16px}
+.allplan summary{cursor:pointer;font-weight:600;font-size:14.5px}
+.allplan[open] summary{margin-bottom:12px}
+.dps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 24px}
+.dp{display:flex;flex-direction:column;gap:4px;min-width:0}
+.dp-h{font-size:14px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.dp-h small{color:var(--muted);font-family:var(--mono);font-size:12px}
+.dp ol{margin:0;padding-left:20px;font-size:13.5px;color:var(--muted);display:flex;flex-direction:column;gap:2px}
+.tips{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:14px;color:var(--muted);max-width:75ch}
+.tips b{color:var(--ink)}
+@media (max-width:720px){ .dps{grid-template-columns:minmax(0,1fr)} .hrow{grid-template-columns:84px minmax(0,1fr);padding:9px 12px} }
+.tmr{background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:20px 22px;display:flex;flex-direction:column;gap:14px}
+.tmr-top{display:flex;justify-content:space-between;align-items:center;gap:10px 16px;flex-wrap:wrap}
+.tmr-top label{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.tmr select{font:inherit;font-size:13.5px;padding:5px 8px;border:1px solid var(--rule);border-radius:8px;background:var(--bg);color:var(--ink)}
+.tmr-main{display:flex;align-items:flex-end;gap:12px 28px;flex-wrap:wrap}
+.tmr-phase{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.tmr-time{font-family:var(--mono);font-size:clamp(56px,11vw,92px);font-weight:700;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.tmr-task{font-size:15px;font-weight:600;max-width:60ch}
+.tmr-msg{font-size:13.5px;color:var(--muted)}
+.tmr-bar{height:6px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.tmr-bar i{display:block;height:100%;width:0;border-radius:99px;background:var(--ink)}
+.tmr-ctrl{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:inherit;font-size:14px;font-weight:600;padding:9px 16px;border-radius:10px;border:1px solid var(--rule);background:var(--surface-2);color:var(--ink);cursor:pointer}
+.btn:hover{filter:brightness(.97)}
+.btn.primary{border-color:transparent;color:var(--on-accent)}
+.tmr-seq{list-style:none;margin:0;padding:0;display:flex;gap:6px;flex-wrap:wrap}
+.tmr-seq li{font-family:var(--mono);font-size:11.5px;padding:3px 8px;border-radius:99px;background:var(--surface-2);color:var(--muted)}
+.tmr-seq li.done{text-decoration:line-through;opacity:.6}
+.tmr-seq li.cur{background:var(--ink);color:var(--bg)}
+.tmr-log{display:flex;gap:6px 18px;flex-wrap:wrap;font-size:13px;color:var(--muted);border-top:1px solid var(--rule);padding-top:12px}
+.tmr-log b{color:var(--ink);font-variant-numeric:tabular-nums}
+.focus{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px 16px;text-align:center}
+.focus .tmr-time{font-size:clamp(88px,22vw,220px)}
+.focus .tmr-task{font-size:clamp(16px,2.4vw,22px)}
+.urgent{justify-content:space-between;align-items:center;flex-wrap:wrap}
+.btn.sm{font-size:13px;padding:6px 12px;border-radius:8px}
+.golink{color:inherit;text-decoration:none;cursor:pointer}
+.golink:hover{text-decoration:underline;text-underline-offset:3px}
+@keyframes pingfx{0%{box-shadow:0 0 0 0 var(--warn)}100%{box-shadow:0 0 0 16px transparent}}
+.tmr.ping,.focus.ping{animation:pingfx 1.1s ease-out 3}
+@media (prefers-reduced-motion:reduce){.tmr.ping,.focus.ping{animation:none;outline:3px solid var(--warn)}}
+.foot{font-size:12.5px;color:var(--faint);border-top:1px solid var(--rule);padding-top:14px}
+
+@media (max-width:820px){
+  .duo{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:720px){
+  .act{grid-template-columns:50px minmax(0,1fr) auto;grid-template-areas:"id when grade" "id parts weight";gap:10px 12px;padding:14px 16px;align-items:start}
+  .act-id{flex-direction:column;gap:0}
+  .act-weight{align-self:end}
+  .blocks{margin-left:0}
+  .big{font-size:52px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">UOC · Semestre 2026-1 · 4 asignaturas · 24 créditos</div>
+    <h1>Semestre 2026-1</h1>
+    <p class="sub"><b class="c-fp">Fundamentos de programación</b>, <b class="c-cc">Competencia comunicativa para profesionales de las TIC</b>, <b class="c-is">Ingeniería del software</b> y <b class="c-lg">Lógica</b>, del 23 de septiembre de 2026 al 3 de febrero de 2027.</p>
+    <div class="meta-row">
+      <div class="weekbar"><span id="weekText">Semana 1</span><span class="meter" aria-hidden="true"><i id="weekMeter" style="width:0%"></i></span></div>
+      <span class="save" id="saveState">Guardado automático</span>
+    </div>
+  </header>
+
+  <section class="plan" aria-labelledby="planTitle">
+    <div class="sec-head"><h2 id="planTitle">Qué toca cada día</h2><span class="aside">Entre semana, una asignatura; el fin de semana, 3 h de varias</span></div>
+    <p class="todayline" id="todayLine"></p>
+    <ol class="week" id="week"></ol>
+    <div class="tmr" id="tmr">
+      <div class="tmr-top">
+        <h3>Cronómetro</h3>
+        <div style="display:flex;gap:8px 16px;flex-wrap:wrap">
+          <label for="tSubj">Asignatura <select id="tSubj"></select></label>
+          <label for="tPreset">Ritmo <select id="tPreset"></select></label>
+        </div>
+      </div>
+      <div class="tmr-main">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span class="tmr-phase" id="tPhase">Estudio</span>
+          <span class="tmr-time" id="tTime" aria-live="off">50:00</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:220px">
+          <span class="tmr-task" id="tTask"></span>
+          <span class="tmr-msg" id="tMsg"></span>
+        </div>
+      </div>
+      <div class="tmr-bar"><i id="tBar"></i></div>
+      <div class="tmr-ctrl">
+        <button class="btn primary" id="tStart" type="button">Empezar</button>
+        <button class="btn" id="tSkip" type="button">Saltar fase</button>
+        <button class="btn" id="tReset" type="button">Reiniciar</button>
+        <button class="btn" id="tFocus" type="button">Modo concentración</button>
+      </div>
+      <ol class="tmr-seq" id="tSeq"></ol>
+      <div class="tmr-log" id="tLog"></div>
+    </div>
+    <div class="focus" id="focus" hidden>
+      <span class="tmr-phase" id="fPhase"></span>
+      <span class="tmr-time" id="fTime"></span>
+      <span class="tmr-task" id="fTask"></span>
+      <div class="tmr-ctrl"><button class="btn primary" id="fStart" type="button">Pausa</button><button class="btn" id="fSkip" type="button">Saltar fase</button><button class="btn" id="fExit" type="button">Salir</button></div>
+    </div>
+    <div class="hplan" id="hoyPlan" hidden>
+      <div class="hplan-head"><h3>Tu horario de hoy</h3><span class="aside mono" id="hoyTotal"></span></div>
+      <ol class="hrows" id="hoyRows"></ol>
+    </div>
+    <details class="allplan" id="allPlan" hidden><summary id="allPlanSum">Horario completo</summary><div class="dps" id="allPlanBody"></div></details>
+    <details class="allplan"><summary>Cómo estudiar mejor (según la investigación)</summary>
+      <ul class="tips">
+        <li><b>Bloques de 45–50 minutos con 10 de descanso</b>, y uno largo de 20 cada dos bloques. Entre semana, una asignatura; el fin de semana, 3 horas repartidas entre varias. Las pausas cortas reducen el cansancio; para lo más exigente (programar, deducciones) conviene alguna más larga.</li>
+        <li><b>Empieza recordando sin apuntes</b> lo que viste la última vez de esa asignatura. Recuperar de memoria fija mucho más que releer.</li>
+        <li><b>Pregúntate y haz ejercicios en vez de subrayar o releer.</b> Las autoevaluaciones de los módulos y ALURA son justo eso.</li>
+        <li><b>Lo más difícil, en el primer bloque</b>, cuando estás más fresco.</li>
+        <li><b>El móvil, fuera de la mesa</b> mientras estudias; en los descansos, mejor moverte que mirar la pantalla.</li>
+        <li><b>Nada de café a partir de las 15:30</b>: la cafeína tomada 6 horas antes de dormir ya te quita sueño.</li>
+        <li><b>A dormir a las 21:30</b>: son 7 h 30 min hasta las 5:00. Dormir es cuando se consolida lo estudiado. El fin de semana, levántate como mucho una hora más tarde.</li>
+      </ul>
+    </details>
+  </section>
+
+  <div class="duo">
+    <section class="panel" aria-labelledby="nextLabel">
+      <h2 class="label" id="nextLabel">Próxima entrega</h2>
+      <div id="nextBody" style="display:flex;flex-direction:column;gap:14px"></div>
+    </section>
+    <section class="panel" aria-labelledby="howLabel">
+      <h2 class="label" id="howLabel">Cómo vas</h2>
+      <div id="howBody" style="display:flex;flex-direction:column"></div>
+    </section>
+  </div>
+
+  <section class="sec" aria-labelledby="tlTitle">
+    <div class="sec-head">
+      <h2 id="tlTitle">El semestre de un vistazo</h2>
+      <div class="legend"><span><i style="background:var(--fp)"></i>Programación</span><span><i style="background:var(--cc)"></i>Comunicación</span><span><i style="background:var(--is)"></i>Ing. del software</span><span><i style="background:var(--lg)"></i>Lógica</span><span><i class="lt"></i>Hoy</span></div>
+    </div>
+    <div class="tl-scroll">
+      <div class="tl">
+        <div class="tl-labels" id="tlLabels"></div>
+        <div class="tl-body" id="tlBody"><div class="axis" id="axis"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-label="Asignaturas">
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div id="panels"></div>
+  </section>
+</div>
+
+<script>
+(function(){
+  /* ================= SEED DATA (importado de tu copia de Claude) ================= */
+  const SEED = {
+   "eventos": {
+    "fp-sesion-2026-09-28": { "fecha": "2026-09-28", "fin": "21:00", "inicio": "19:00", "s": "fp", "titulo": "Sesión síncrona" },
+    "lg-presentacion-2026-09-24": { "fecha": "2026-09-24", "inicio": "17:00", "s": "lg", "titulo": "Presentarte en el aula" },
+    "personal-centro-salud-2026-09-28": { "fecha": "2026-09-28", "inicio": "08:00", "s": "personal", "titulo": "Cita en el centro de salud" },
+    "personal-certificado-concordancia": { "fecha": "2026-09-28", "inicio": "16:40", "s": "personal", "titulo": "Averiguar lo del certificado de concordancia" },
+    "personal-curso-trabajo-2026-11-18": { "fecha": "2026-11-18", "hasta": "2026-11-25", "s": "personal", "titulo": "Curso del trabajo (personal de oficinas)" },
+    "personal-pagos-2026-10-31": { "fecha": "2026-10-31", "s": "personal", "titulo": "Pagar 50 € a Yasser y 50 € a Yoidelyn" }
+   },
+   "horario": {
+    "2026-09-28": {
+     "bloques": [
+      { "fin": "17:00", "ini": "16:30", "t": "otro", "txt": "Llegar, merendar (sin café) y despejarte, sin móvil" },
+      { "fin": "17:50", "ini": "17:00", "t": "estudio", "txt": "Introducción: qué es un algoritmo y cómo se escribe en pseudocódigo" },
+      { "fin": "18:00", "ini": "17:50", "t": "descanso", "txt": "Descanso corto" },
+      { "fin": "18:40", "ini": "18:00", "t": "estudio", "txt": "Instalar el entorno de C que indique el aula y compilar un primer programa" },
+      { "fin": "19:00", "ini": "18:40", "t": "otro", "txt": "Cena ligera y temprana" },
+      { "fin": "21:00", "ini": "19:00", "t": "sesion", "txt": "Sesión síncrona de Programación: ten apuntadas tus dudas" },
+      { "fin": "21:45", "ini": "21:00", "t": "otro", "txt": "Desconectar: sin pantallas" },
+      { "fin": "", "ini": "21:45", "t": "sueno", "txt": "A dormir: 7 h 15 min hasta las 5:00" }
+     ], "fecha": "2026-09-28", "s": "fp"
+    },
+    "2026-09-29": {
+     "bloques": [
+      { "fin": "17:00", "ini": "16:30", "t": "otro", "txt": "Llegar, merendar (sin café) y despejarte 30 min: ducha o paseo corto, sin móvil" },
+      { "fin": "17:50", "ini": "17:00", "t": "estudio", "txt": "M1 · Tema 1: la lógica de enunciados y su lenguaje (lee y reproduce los ejemplos a mano)" },
+      { "fin": "18:00", "ini": "17:50", "t": "descanso", "txt": "Descanso: levántate, agua, mira por la ventana" },
+      { "fin": "18:50", "ini": "18:00", "t": "estudio", "txt": "Formalizar frases: ejercicios de autoevaluación del tema 1, sin mirar las soluciones" },
+      { "fin": "19:10", "ini": "18:50", "t": "descanso", "txt": "Descanso largo: muévete o estira" },
+      { "fin": "20:00", "ini": "19:10", "t": "estudio", "txt": "ALURA: primer intento de la prueba de práctica de la PEC 1" },
+      { "fin": "20:30", "ini": "20:00", "t": "otro", "txt": "Cena ligera" },
+      { "fin": "20:45", "ini": "20:30", "t": "repaso", "txt": "Repaso de 15 min: escribe de memoria lo que aprendiste hoy y anota por dónde seguir" },
+      { "fin": "21:30", "ini": "20:45", "t": "otro", "txt": "Desconectar: sin pantallas, deja listo lo de mañana" },
+      { "fin": "", "ini": "21:30", "t": "sueno", "txt": "A dormir: 7 h 30 min hasta las 5:00" }
+     ], "fecha": "2026-09-29", "s": "lg"
+    },
+    "2026-09-30": {
+     "bloques": [
+      { "fin": "17:00", "ini": "16:30", "t": "otro", "txt": "Llegar, merendar (sin café) y despejarte 30 min: ducha o paseo corto, sin móvil" },
+      { "fin": "17:50", "ini": "17:00", "t": "estudio", "txt": "Módulo 1: competencia comunicativa y producción de textos" },
+      { "fin": "18:00", "ini": "17:50", "t": "descanso", "txt": "Descanso: levántate, agua, mira por la ventana" },
+      { "fin": "18:50", "ini": "18:00", "t": "estudio", "txt": "PEC 1 (se abrió ayer): lee el cuestionario y resuelve lo que ya sepas" },
+      { "fin": "19:10", "ini": "18:50", "t": "descanso", "txt": "Descanso largo: muévete o estira" },
+      { "fin": "20:00", "ini": "19:10", "t": "estudio", "txt": "Módulo transversal: el proceso de producción de textos" },
+      { "fin": "20:30", "ini": "20:00", "t": "otro", "txt": "Cena ligera" },
+      { "fin": "20:45", "ini": "20:30", "t": "repaso", "txt": "Repaso de 15 min: escribe de memoria lo que aprendiste hoy y anota por dónde seguir" },
+      { "fin": "21:30", "ini": "20:45", "t": "otro", "txt": "Desconectar: sin pantallas, deja listo lo de mañana" },
+      { "fin": "", "ini": "21:30", "t": "sueno", "txt": "A dormir: 7 h 30 min hasta las 5:00" }
+     ], "fecha": "2026-09-30", "s": "cc"
+    },
+    "2026-10-01": {
+     "bloques": [
+      { "fin": "17:00", "ini": "16:30", "t": "otro", "txt": "Llegar, merendar (sin café) y despejarte 30 min: ducha o paseo corto, sin móvil" },
+      { "fin": "17:50", "ini": "17:00", "t": "estudio", "txt": "Cuestionario inicial (si no está hecho) e instalar Visual Paradigm de escritorio" },
+      { "fin": "18:00", "ini": "17:50", "t": "descanso", "txt": "Descanso: levántate, agua, mira por la ventana" },
+      { "fin": "18:50", "ini": "18:00", "t": "estudio", "txt": "Módulo 1: introducción a la ingeniería del software" },
+      { "fin": "19:10", "ini": "18:50", "t": "descanso", "txt": "Descanso largo: muévete o estira" },
+      { "fin": "20:00", "ini": "19:10", "t": "estudio", "txt": "PEC 1 (entrega vie 16 oct): lee el enunciado y empieza" },
+      { "fin": "20:30", "ini": "20:00", "t": "otro", "txt": "Cena ligera" },
+      { "fin": "20:45", "ini": "20:30", "t": "repaso", "txt": "Repaso de 15 min: escribe de memoria lo que aprendiste hoy y anota por dónde seguir" },
+      { "fin": "21:30", "ini": "20:45", "t": "otro", "txt": "Desconectar: sin pantallas, deja listo lo de mañana" },
+      { "fin": "", "ini": "21:30", "t": "sueno", "txt": "A dormir: 7 h 30 min hasta las 5:00" }
+     ], "fecha": "2026-10-01", "s": "is"
+    },
+    "2026-10-02": {
+     "bloques": [
+      { "fin": "17:00", "ini": "16:30", "t": "otro", "txt": "Llegar, merendar (sin café) y despejarte 30 min: ducha o paseo corto, sin móvil" },
+      { "fin": "17:50", "ini": "17:00", "t": "estudio", "txt": "PEC 1 (se abrió ayer): cuestionario de diseño algorítmico" },
+      { "fin": "18:00", "ini": "17:50", "t": "descanso", "txt": "Descanso: levántate, agua, mira por la ventana" },
+      { "fin": "18:50", "ini": "18:00", "t": "estudio", "txt": "PEC 1: primer borrador del programa en C" },
+      { "fin": "19:10", "ini": "18:50", "t": "descanso", "txt": "Descanso largo: muévete o estira" },
+      { "fin": "20:00", "ini": "19:10", "t": "estudio", "txt": "Tipos básicos de datos: ejercicios del módulo" },
+      { "fin": "20:30", "ini": "20:00", "t": "otro", "txt": "Cena ligera" },
+      { "fin": "20:45", "ini": "20:30", "t": "repaso", "txt": "Repaso de 15 min: escribe de memoria lo que aprendiste hoy y anota por dónde seguir" },
+      { "fin": "21:30", "ini": "20:45", "t": "otro", "txt": "Desconectar: sin pantallas, deja listo lo de mañana" },
+      { "fin": "", "ini": "21:30", "t": "sueno", "txt": "A dormir: 7 h 30 min hasta las 5:00" }
+     ], "fecha": "2026-10-02", "s": "fp"
+    },
+    "2026-10-03": {
+     "bloques": [
+      { "fin": "08:45", "ini": "08:00", "s": "lg", "t": "estudio", "txt": "Lógica · Tema 1 de memoria y aprobar la prueba de práctica de la PEC 1 en ALURA" },
+      { "fin": "08:55", "ini": "08:45", "t": "descanso", "txt": "Descanso corto" },
+      { "fin": "09:40", "ini": "08:55", "s": "lg", "t": "estudio", "txt": "Lógica · Hacer la PEC 1 en ALURA (vence mañana; ejercicios con tiempo)" },
+      { "fin": "10:00", "ini": "09:40", "t": "descanso", "txt": "Descanso largo: desayuno o paseo" },
+      { "fin": "10:45", "ini": "10:00", "s": "fp", "t": "estudio", "txt": "Programación · PEC 1: avanzar el programa en C (vence mié 7)" },
+      { "fin": "10:55", "ini": "10:45", "t": "descanso", "txt": "Descanso corto" },
+      { "fin": "11:40", "ini": "10:55", "s": "is", "t": "estudio", "txt": "Ing. del software · Módulo 1 y avanzar la PEC 1 (vence vie 16)" },
+      { "fin": "", "ini": "11:40", "t": "otro", "txt": "Resto del día libre" },
+      { "fin": "", "ini": "21:30", "t": "sueno", "txt": "A dormir" }
+     ], "fecha": "2026-10-03", "s": "lg"
+    },
+    "2026-10-04": {
+     "bloques": [
+      { "fin": "08:45", "ini": "08:00", "s": "lg", "t": "estudio", "txt": "Lógica · Si la PEC 1 no está entregada, termínala ahora (vence hoy). Si ya está, empieza el tema 2" },
+      { "fin": "08:55", "ini": "08:45", "t": "descanso", "txt": "Descanso corto" },
+      { "fin": "09:40", "ini": "08:55", "s": "fp", "t": "estudio", "txt": "Programación · PEC 1: terminar el programa en C y probarlo con varios casos" },
+      { "fin": "10:00", "ini": "09:40", "t": "descanso", "txt": "Descanso largo: desayuno o paseo" },
+      { "fin": "10:45", "ini": "10:00", "s": "cc", "t": "estudio", "txt": "Comunicación · PEC 1: avanzar el cuestionario (vence mar 13)" },
+      { "fin": "10:55", "ini": "10:45", "t": "descanso", "txt": "Descanso corto" },
+      { "fin": "11:40", "ini": "10:55", "s": "is", "t": "estudio", "txt": "Ing. del software · Módulo 2: orientación a objetos" },
+      { "fin": "", "ini": "11:40", "t": "otro", "txt": "Resto del día libre" },
+      { "fin": "19:15", "ini": "19:00", "t": "otro", "txt": "Planifica la semana: revisa el panel y marca lo que ya entregaste" },
+      { "fin": "", "ini": "21:30", "t": "sueno", "txt": "A dormir" }
+     ], "fecha": "2026-10-04", "s": "lg"
+    },
+    "2026-10-05": {
+     "bloques": [
+      { "fin": "17:00", "ini": "16:30", "t": "otro", "txt": "Llegar, merendar (sin café) y despejarte 30 min: ducha o paseo corto, sin móvil" },
+      { "fin": "17:50", "ini": "17:00", "t": "estudio", "txt": "PEC 1: terminar el programa en C y probarlo con varios casos" },
+      { "fin": "18:00", "ini": "17:50", "t": "descanso", "txt": "Descanso: levántate, agua, mira por la ventana" },
+      { "fin": "18:50", "ini": "18:00", "t": "estudio", "txt": "PEC 1: revisar el cuestionario y entregar las dos partes hoy (vence el miércoles)" },
+      { "fin": "19:10", "ini": "18:50", "t": "descanso", "txt": "Descanso largo: muévete o estira" },
+      { "fin": "20:00", "ini": "19:10", "t": "estudio", "txt": "Estructuras de control: alternativa e iterativa (lectura y ejemplos)" },
+      { "fin": "20:30", "ini": "20:00", "t": "otro", "txt": "Cena ligera" },
+      { "fin": "20:45", "ini": "20:30", "t": "repaso", "txt": "Repaso de 15 min: escribe de memoria lo que aprendiste hoy y anota por dónde seguir" },
+      { "fin": "21:30", "ini": "20:45", "t": "otro", "txt": "Desconectar: sin pantallas, deja listo lo de mañana" },
+      { "fin": "", "ini": "21:30", "t": "sueno", "txt": "A dormir: 7 h 30 min hasta las 5:00" }
+     ], "fecha": "2026-10-05", "s": "fp"
+    },
+    "2026-10-06": {
+     "bloques": [
+      { "fin": "17:00", "ini": "16:30", "t": "otro", "txt": "Llegar, merendar (sin café) y despejarte 30 min: ducha o paseo corto, sin móvil" },
+      { "fin": "17:50", "ini": "17:00", "t": "estudio", "txt": "M1 · Tema 2: deducción natural (reproduce los ejemplos a mano)" },
+      { "fin": "18:00", "ini": "17:50", "t": "descanso", "txt": "Descanso: levántate, agua, mira por la ventana" },
+      { "fin": "18:50", "ini": "18:00", "t": "estudio", "txt": "Deducciones en ALURA, que corrige al momento" },
+      { "fin": "19:10", "ini": "18:50", "t": "descanso", "txt": "Descanso largo: muévete o estira" },
+      { "fin": "20:00", "ini": "19:10", "t": "estudio", "txt": "Ejercicios de autoevaluación del tema 2, sin mirar soluciones" },
+      { "fin": "20:30", "ini": "20:00", "t": "otro", "txt": "Cena ligera" },
+      { "fin": "20:45", "ini": "20:30", "t": "repaso", "txt": "Repaso de 15 min: escribe de memoria lo que aprendiste hoy y anota por dónde seguir" },
+      { "fin": "21:30", "ini": "20:45", "t": "otro", "txt": "Desconectar: sin pantallas, deja listo lo de mañana" },
+      { "fin": "", "ini": "21:30", "t": "sueno", "txt": "A dormir: 7 h 30 min hasta las 5:00" }
+     ], "fecha": "2026-10-06", "s": "lg"
+    },
+    "2026-10-07": {
+     "bloques": [
+      { "fin": "17:00", "ini": "16:30", "t": "otro", "txt": "Comprueba que la PEC 1 de Programación está entregada (vence hoy). Después, merienda y despeja 30 min" },
+      { "fin": "17:50", "ini": "17:00", "t": "estudio", "txt": "PR 1 (se abrió ayer): lee el caso y planifica el correo y el vídeo" },
+      { "fin": "18:00", "ini": "17:50", "t": "descanso", "txt": "Descanso: levántate, agua, mira por la ventana" },
+      { "fin": "18:50", "ini": "18:00", "t": "estudio", "txt": "PEC 1: avanzar el cuestionario" },
+      { "fin": "19:10", "ini": "18:50", "t": "descanso", "txt": "Descanso largo: muévete o estira" },
+      { "fin": "20:00", "ini": "19:10", "t": "estudio", "txt": "Módulo 2: adecuación (la necesitarás para el correo)" },
+      { "fin": "20:30", "ini": "20:00", "t": "otro", "txt": "Cena ligera" },
+      { "fin": "20:45", "ini": "20:30", "t": "repaso", "txt": "Repaso de 15 min: escribe de memoria lo que aprendiste hoy y anota por dónde seguir" },
+      { "fin": "21:30", "ini": "20:45", "t": "otro", "txt": "Desconectar: sin pantallas, deja listo lo de mañana" },
+      { "fin": "", "ini": "21:30", "t": "sueno", "txt": "A dormir: 7 h 30 min hasta las 5:00" }
+     ], "fecha": "2026-10-07", "s": "cc"
+    },
+    "2026-10-08": {
+     "bloques": [
+      { "fin": "17:00", "ini": "16:30", "t": "otro", "txt": "Llegar, merendar (sin café) y despejarte 30 min: ducha o paseo corto, sin móvil" },
+      { "fin": "17:50", "ini": "17:00", "t": "estudio", "txt": "PEC 1: avanzar los ejercicios" },
+      { "fin": "18:00", "ini": "17:50", "t": "descanso", "txt": "Descanso: levántate, agua, mira por la ventana" },
+      { "fin": "18:50", "ini": "18:00", "t": "estudio", "txt": "Módulo 2: clases, herencia y polimorfismo" },
+      { "fin": "19:10", "ini": "18:50", "t": "descanso", "txt": "Descanso largo: muévete o estira" },
+      { "fin": "20:00", "ini": "19:10", "t": "estudio", "txt": "PEC 1: repasar y apuntar dudas para el foro" },
+      { "fin": "20:30", "ini": "20:00", "t": "otro", "txt": "Cena ligera" },
+      { "fin": "20:45", "ini": "20:30", "t": "repaso", "txt": "Repaso de 15 min: escribe de memoria lo que aprendiste hoy y anota por dónde seguir" },
+      { "fin": "21:30", "ini": "20:45", "t": "otro", "txt": "Desconectar: sin pantallas, deja listo lo de mañana" },
+      { "fin": "", "ini": "21:30", "t": "sueno", "txt": "A dormir: 7 h 30 min hasta las 5:00" }
+     ], "fecha": "2026-10-08", "s": "is"
+    },
+    "2026-10-09": {
+     "bloques": [
+      { "fin": "17:00", "ini": "16:30", "t": "otro", "txt": "Llegar, merendar (sin café) y despejarte 30 min: ducha o paseo corto, sin móvil" },
+      { "fin": "17:50", "ini": "17:00", "t": "estudio", "txt": "PEC 2 (se abrió ayer): cuestionario" },
+      { "fin": "18:00", "ini": "17:50", "t": "descanso", "txt": "Descanso: levántate, agua, mira por la ventana" },
+      { "fin": "18:50", "ini": "18:00", "t": "estudio", "txt": "PEC 2: primer borrador del programa en C" },
+      { "fin": "19:10", "ini": "18:50", "t": "descanso", "txt": "Descanso largo: muévete o estira" },
+      { "fin": "20:00", "ini": "19:10", "t": "estudio", "txt": "Estructuras de control: ejercicios" },
+      { "fin": "20:30", "ini": "20:00", "t": "otro", "txt": "Cena ligera" },
+      { "fin": "20:45", "ini": "20:30", "t": "repaso", "txt": "Repaso de 15 min: escribe de memoria lo que aprendiste hoy y anota por dónde seguir" },
+      { "fin": "21:30", "ini": "20:45", "t": "otro", "txt": "Desconectar: sin pantallas, deja listo lo de mañana" },
+      { "fin": "", "ini": "21:30", "t": "sueno", "txt": "A dormir: 7 h 30 min hasta las 5:00" }
+     ], "fecha": "2026-10-09", "s": "fp"
+    },
+    "2026-10-10": {
+     "bloques": [
+      { "fin": "08:45", "ini": "08:00", "s": "lg", "t": "estudio", "txt": "Lógica · Tema 2 de memoria y prueba de práctica de la PEC 2 en ALURA" },
+      { "fin": "08:55", "ini": "08:45", "t": "descanso", "txt": "Descanso corto" },
+      { "fin": "09:40", "ini": "08:55", "s": "fp", "t": "estudio", "txt": "Programación · PEC 2: programa en C (vence mié 14)" },
+      { "fin": "10:00", "ini": "09:40", "t": "descanso", "txt": "Descanso largo: desayuno o paseo" },
+      { "fin": "10:45", "ini": "10:00", "s": "is", "t": "estudio", "txt": "Ing. del software · PEC 1: avanzar (vence vie 16)" },
+      { "fin": "10:55", "ini": "10:45", "t": "descanso", "txt": "Descanso corto" },
+      { "fin": "11:40", "ini": "10:55", "s": "cc", "t": "estudio", "txt": "Comunicación · PEC 1: terminar el cuestionario (vence mar 13)" },
+      { "fin": "", "ini": "11:40", "t": "otro", "txt": "Resto del día libre" },
+      { "fin": "", "ini": "21:30", "t": "sueno", "txt": "A dormir" }
+     ], "fecha": "2026-10-10", "s": "lg"
+    },
+    "2026-10-11": {
+     "bloques": [
+      { "fin": "08:45", "ini": "08:00", "s": "cc", "t": "estudio", "txt": "Comunicación · PEC 1: revisar y entregar (vence el martes 13)" },
+      { "fin": "08:55", "ini": "08:45", "t": "descanso", "txt": "Descanso corto" },
+      { "fin": "09:40", "ini": "08:55", "s": "cc", "t": "estudio", "txt": "Comunicación · PR 1: borrador del correo (vence mar 20)" },
+      { "fin": "10:00", "ini": "09:40", "t": "descanso", "txt": "Descanso largo: desayuno o paseo" },
+      { "fin": "10:45", "ini": "10:00", "s": "fp", "t": "estudio", "txt": "Programación · PEC 2: terminar el programa y probarlo" },
+      { "fin": "10:55", "ini": "10:45", "t": "descanso", "txt": "Descanso corto" },
+      { "fin": "11:40", "ini": "10:55", "s": "is", "t": "estudio", "txt": "Ing. del software · PEC 1: repasar y apuntar dudas para el foro" },
+      { "fin": "", "ini": "11:40", "t": "otro", "txt": "Resto del día libre" },
+      { "fin": "19:15", "ini": "19:00", "t": "otro", "txt": "Planifica la semana: revisa el panel y marca lo que ya entregaste" },
+      { "fin": "", "ini": "21:30", "t": "sueno", "txt": "A dormir" }
+     ], "fecha": "2026-10-11", "s": "cc"
+    }
+   },
+   "registro": {
+    "2026-09-24": { "fecha": "2026-09-24", "min": { "is": 50 } },
+    "2026-09-25": { "fecha": "2026-09-25", "min": { "is": 67, "lg": 215 } },
+    "2026-09-26": { "fecha": "2026-09-26", "min": { "is": 368 } },
+    "2026-09-27": { "fecha": "2026-09-27", "min": { "is": 230 } },
+    "2026-09-28": { "fecha": "2026-09-28", "min": { "fp": 110 } },
+    "2026-10-02": { "fecha": "2026-10-02", "min": { "fp": 114 } },
+    "2026-10-03": { "fecha": "2026-10-03", "min": { "lg": 110 } },
+    "2026-10-04": { "fecha": "2026-10-04", "min": { "cc": 62, "fp": 86, "is": 306, "lg": 105 } },
+    "2026-10-06": { "fecha": "2026-10-06", "min": { "is": 110 } },
+    "2026-10-07": { "fecha": "2026-10-07", "min": { "lg": 30 } },
+    "2026-10-08": { "fecha": "2026-10-08", "min": { "cc": 57 } },
+    "2026-10-10": { "fecha": "2026-10-10", "min": { "cc": 135 } },
+    "2026-10-11": { "fecha": "2026-10-11", "min": { "fp": 40 } },
+    "2026-10-14": { "fecha": "2026-10-14", "min": { "lg": 60 } }
+   },
+   "actividades": {
+    "cc-pec1": { "nota": null, "partes": [ true ] },
+    "cc-pr1": { "nota": null, "notas": [ null, null ], "partes": [ true, false ] },
+    "is-ci": { "nota": null, "partes": [ true ] },
+    "is-pec1": { "nota": null, "partes": [ true ] },
+    "lg-pec1": { "nota": null, "partes": [ true, true ] },
+    "pec1": { "nota": null, "notas": [ null, null ], "partes": [ true, true ] },
+    "pec2": { "nota": null, "notas": [ 8, null ], "partes": [ true, true ] }
+   },
+   "temario": {
+    "lg": { "hechos": { "t1": true, "t2": true } }
+   }
+  };
+
+  /* ================= DATA (de los planes docentes) ================= */
+  const ORDER = ['fp','cc','is','lg'];
+  const SUBJ = {
+    fp: {
+      name:'Fundamentos de programación', short:'Programación', abbr:'FP',
+      meta:'75.554 · 6 créditos · Solo evaluación continua',
+      desc:'Diseño de algoritmos en pseudocódigo y programación en C. No hay examen final: tu nota es la de la evaluación continua.',
+      temarioDoc:'progreso',
+      temario:[['1','Introducción a la algorítmica y la programación'],['2','Tipos básicos de datos'],['3','Estructuras de control: secuencial, alternativa e iterativa'],['4','Tipos estructurados de datos: tablas y tuplas'],['5','Esquemas algorítmicos: recorrido y búsqueda'],['6','Modularidad'],['7','Recursividad']],
+      rules:[
+        ['Fuera de plazo es un 0','Una PEC o práctica entregada tarde se califica con D (0), salvo causa de fuerza mayor justificada ante el profesorado responsable.'],
+        ['Sin el programa en C, la PEC no cuenta','Cada PEC tiene un cuestionario y un ejercicio en C. Para que te evalúen la PEC es imprescindible entregar el ejercicio en C.'],
+        ['Todas las prácticas son obligatorias','Una entrega que no muestre esfuerzo por resolverla no cuenta como entregada.'],
+        ['Uso de IA','El enunciado de cada actividad dice si se puede usar y cómo; si se usa, hay que citarla. Hay detección de plagio en texto y código.'],
+        ['No presentado','Solo si entregas como máximo dos PEC y ninguna práctica.']
+      ],
+      foot:'El plan habla de cuatro prácticas, pero solo detalla tres (10 + 30 + 55 = 95 %). La nota de prácticas se calcula sobre esas tres; conviene preguntar en el aula por el 5 % restante.'
+    },
+    cc: {
+      name:'Competencia comunicativa para profesionales de las TIC', short:'Comunicación', abbr:'CC',
+      meta:'75.563 · 6 créditos · Evaluación continua + prueba final',
+      desc:'Redacción de textos especializados del ámbito TIC (correos, informes, memorias) y comunicación oral. Tres PEC tipo cuestionario y una práctica en cuatro partes sobre un caso real.',
+      temarioDoc:'cc',
+      temario:[['M1','Competencia comunicativa y producción de textos'],['M2','Adecuación'],['M3','Coherencia'],['M4','Léxico y cohesión'],['M5','Puntuación y aspectos formales'],['T','El proceso de producción de textos'],['W','Textos prototípicos del ámbito TIC']],
+      rules:[
+        ['Nada de IA generativa','No se puede usar para resolver actividades evaluables salvo que el enunciado lo permita explícitamente. Si hay sospecha, la actividad es una D y pueden pedirte una prueba síncrona.'],
+        ['Hay que entregarlo todo','Las tres PEC y las cuatro partes de la práctica. Si vas a tener problemas con un plazo, avisa antes al profesor colaborador.'],
+        ['Prueba final con supervisión','Ordenador con permisos para instalar el software de supervisión, cámara y micrófono, más un segundo dispositivo con cámara (móvil o tableta) sobre un trípode o soporte.'],
+        ['Si suspendes la prueba final','Con la EC aprobada y menos de un 4 en la PF, tu nota final es la de la PF. Si no te presentas a la PF, suspenso (3).'],
+        ['Correcciones','Las PEC se corrigen en el aula tres días después de la entrega. Para pedir revisión de una nota tienes unas dos semanas desde que se publica.'],
+        ['No presentado','Solo si entregas una única PEC y ninguna práctica.']
+      ],
+      foot:'La fecha de la prueba final no aparece en el plan docente; cuando la publiquen en el aula, ponla en la fila «PF» y entrará en la cuenta atrás.'
+    },
+    is: {
+      name:'Ingeniería del software', short:'Ing. del software', abbr:'IS',
+      meta:'75.565 · 6 créditos · Evaluación continua + prueba final',
+      desc:'Métodos de desarrollo, orientación a objetos, requisitos y modelado con UML (casos de uso, dominio). Cinco retos: tres PEC y dos prácticas sobre un caso completo.',
+      temarioDoc:'is',
+      temario:[['M1','Introducción a la ingeniería del software'],['M2','Orientación a objetos'],['M3','Requisitos'],['M4','Análisis UML']],
+      rules:[
+        ['Cuestionario inicial, ya','No cuenta para nota, pero hay que responderlo bien para poder acceder a los contenidos del curso.'],
+        ['UML con Visual Paradigm','Se exige la versión de escritorio. PlantUML no se acepta; otra herramienta solo con permiso previo del profesorado.'],
+        ['Mínimo 3,5 en cada práctica','Si no entregas la PR 1 o sacas menos de 3,5, la PR 1 de recuperación es obligatoria. Entre 3,5 y 5 es opcional, con nota máxima de 5.'],
+        ['Sin EC aprobada no hay prueba final','Hace falta un 5 en la EC para presentarte a la PF; si no, la nota final es No presentado. En la PF hace falta un 4.'],
+        ['PEC 3 cronometrada','Cuestionario tipo test de 30 minutos sobre todo el temario.'],
+        ['IA generativa penaliza','Los enunciados llevan elementos de verificación de autoría y se usan detectores de contenido generado con IA.'],
+        ['Prueba final síncrona','Con supervisión SMOWL, en una franja horaria estricta: cámara, micrófono y un segundo dispositivo con cámara sobre trípode.'],
+        ['Revisiones en 7 días','Las revisiones de notas de la EC se piden al profesor del aula en los 7 días siguientes a su publicación.']
+      ],
+      foot:'Las fechas de la prueba final y de la PR 1 de recuperación no aparecen en el plan docente; ponlas en sus filas cuando las publiquen en el aula. Dedicación estimada: unas 10 horas a la semana.'
+    },
+    lg: {
+      name:'Lógica', short:'Lógica', abbr:'LG',
+      meta:'75.570 · 6 créditos · Evaluación continua 50 % + prueba final 50 %',
+      desc:'Lógica de enunciados y de predicados: formalización, deducción natural, semántica y resolución. Seis PEC en la herramienta ALURA, cada una con su prueba de práctica previa.',
+      temarioDoc:'lg',
+      temario:[['M1·1','Lógica de enunciados y su lenguaje'],['M1·2','Deducción natural (enunciados)'],['M1·3','Verdad y falsedad'],['M1·4','Álgebra de enunciados'],['M1·5','Resolución (enunciados)'],['M2·1','Lógica de predicados y su lenguaje'],['M2·2','Deducción natural (predicados)'],['M2·3','Verdad y falsedad en predicados'],['M2·4','Formas normales'],['M2·5','Resolución (predicados)']],
+      rules:[
+        ['Primero, la prueba de práctica','Para abrir cada PEC en ALURA hay que sacar una nota mínima en su prueba de práctica (PP). Se puede repetir sin límite y no cuenta para nota.'],
+        ['PEC con tiempo e intentos','La mayoría de ejercicios tienen tiempo controlado y un máximo de intentos (normalmente tres); cada intento es un enunciado distinto.'],
+        ['Dos fechas por PEC','La de entrega (la del calendario, la que usa esta página) y la de cierre en ALURA, dos días después, solo como margen para imprevistos.'],
+        ['PEC sin entregar = D','Y con menos de tres PEC entregadas, la EC es No presentado.'],
+        ['La EC va por letras','Se pasa a letra y luego a número: A = 9 o 10, B = 7 u 8, C+ = 5 o 6, C- = 3 o 4, D = 0 a 2. Sin un 5 no puedes hacer la PF y tu nota final es la de la EC.'],
+        ['Copiar sale muy caro','Plagio o copia: EC con D y, a criterio de los Estudios, la prohibición de aprobar cualquier asignatura por EC este semestre y los siguientes.'],
+        ['Ritmo recomendado','Tres sesiones de unas dos horas por semana; 13 o 14 semanas para el temario y el resto para repasar la prueba final.']
+      ],
+      foot:'Las fechas de apertura de cada PEC salen de los bloques del aula. Desde el 4 de enero el aula pasa a la preparación de la prueba final, cuya fecha aún no aparece. Los módulos 3 (álgebra de Boole) y 4 (teoría de conjuntos) no son evaluables.'
+    }
+  };
+  const ACTS = [
+    {id:'pec1', s:'fp', kind:'pec', n:1, ini:'2026-10-01', fin:'2026-10-07', w:18, fw:5.4, partes:['Cuestionario','Programa C']},
+    {id:'pec2', s:'fp', kind:'pec', n:2, ini:'2026-10-08', fin:'2026-10-14', w:18, fw:5.4, partes:['Cuestionario','Programa C']},
+    {id:'pec3', s:'fp', kind:'pec', n:3, ini:'2026-10-15', fin:'2026-10-21', w:18, fw:5.4, partes:['Cuestionario','Programa C']},
+    {id:'pr1',  s:'fp', kind:'pr',  n:1, ini:'2026-10-22', fin:'2026-11-04', w:10, fw:7,   partes:['Algoritmo','Programa C']},
+    {id:'pec4', s:'fp', kind:'pec', n:4, ini:'2026-11-05', fin:'2026-11-11', w:18, fw:5.4, partes:['Cuestionario','Programa C']},
+    {id:'pr2',  s:'fp', kind:'pr',  n:2, ini:'2026-11-12', fin:'2026-11-25', w:30, fw:21,  partes:['Algoritmo','Programa C']},
+    {id:'pec5', s:'fp', kind:'pec', n:5, ini:'2026-11-26', fin:'2026-12-02', w:18, fw:5.4, partes:['Cuestionario','Programa C']},
+    {id:'pr3',  s:'fp', kind:'pr',  n:3, ini:'2026-12-03', fin:'2026-12-23', w:55, fw:38.5,partes:['Algoritmo','Programa C']},
+    {id:'pec6', s:'fp', kind:'pec', n:6, ini:'2027-01-04', fin:'2027-01-10', w:10, fw:3,   partes:['Cuestionario']},
+
+    {id:'cc-pec1', s:'cc', kind:'pec', n:1, ini:'2026-09-29', fin:'2026-10-13', w:1,  fw:9.3,  partes:['Cuestionario']},
+    {id:'cc-pr1',  s:'cc', kind:'pr',  n:1, ini:'2026-10-06', fin:'2026-10-20', w:20, fw:8.4,  partes:['Correo (escrito)','Vídeo (oral)']},
+    {id:'cc-pec2', s:'cc', kind:'pec', n:2, ini:'2026-10-20', fin:'2026-11-02', w:1,  fw:9.3,  partes:['Cuestionario']},
+    {id:'cc-pr2',  s:'cc', kind:'pr',  n:2, ini:'2026-10-27', fin:'2026-11-09', w:20, fw:8.4,  partes:['Entrega']},
+    {id:'cc-pec3', s:'cc', kind:'pec', n:3, ini:'2026-11-10', fin:'2026-11-23', w:1,  fw:9.3,  partes:['Cuestionario']},
+    {id:'cc-pr3',  s:'cc', kind:'pr',  n:3, ini:'2026-11-17', fin:'2026-11-30', w:30, fw:12.6, partes:['Entrega']},
+    {id:'cc-pr4',  s:'cc', kind:'pr',  n:4, ini:'2026-12-08', fin:'2026-12-21', w:30, fw:12.6, partes:['Entrega']},
+    {id:'cc-pf',   s:'cc', kind:'pf',  userDate:true, w:0, fw:30, partes:[], note:'Examen en el aula con supervisión en línea. Nota mínima: 4.'},
+
+    {id:'is-ci',   s:'is', kind:'ini', ini:'2026-09-23', fin:null, w:0, noGrade:true, fwTxt:'—', fwSub:'no evaluable', partes:['Cuestionario inicial respondido'], note:'Sin él no puedes acceder a los contenidos.'},
+    {id:'is-pec1', s:'is', kind:'pec', n:1, ini:'2026-09-25', fin:'2026-10-16', w:40, fw:8.4,  partes:['Entrega'], title:'¿Qué es la ingeniería del software y la orientación a objetos?'},
+    {id:'is-pr1',  s:'is', kind:'pr',  n:1, ini:'2026-10-16', fin:'2026-11-06', w:40, fw:19.6, partes:['Entrega'], title:'¿Qué quieren los clientes?'},
+    {id:'is-rec',  s:'is', kind:'rec', n:1, userDate:true, w:0, fwTxt:'—', fwSub:'sustituye a la PR 1', partes:['Entregada'], note:'Obligatoria si no entregas la PR 1 o sacas menos de 3,5; opcional entre 3,5 y 5 (máx. 5).'},
+    {id:'is-pec2', s:'is', kind:'pec', n:2, ini:'2026-11-06', fin:'2026-11-27', w:40, fw:8.4,  partes:['Entrega'], title:'El lenguaje de la ingeniería del software'},
+    {id:'is-pr2',  s:'is', kind:'pr',  n:2, ini:'2026-11-27', fin:'2026-12-18', w:60, fw:29.4, partes:['Entrega'], title:'¿Cómo son los «planos» de un sistema de software?'},
+    {id:'is-pec3', s:'is', kind:'pec', n:3, ini:'2026-12-16', fin:'2026-12-23', w:20, fw:4.2,  partes:['Cuestionario (30 min)'], title:'¿Qué hemos aprendido?'},
+    {id:'is-pf',   s:'is', kind:'pf',  userDate:true, w:0, fw:30, partes:[], note:'Síncrona, con supervisión SMOWL. Solo si la EC llega al 5. Nota mínima: 4.'},
+
+    {id:'lg-pec1', s:'lg', kind:'pec', n:1, ini:'2026-09-28', fin:'2026-10-04', w:1, fw:8.3, partes:['Prueba de práctica','PEC'], title:'M1 · Tema 1: lógica de enunciados y su lenguaje'},
+    {id:'lg-pec2', s:'lg', kind:'pec', n:2, ini:'2026-10-05', fin:'2026-10-18', w:1, fw:8.3, partes:['Prueba de práctica','PEC'], title:'M1 · Tema 2: deducción natural'},
+    {id:'lg-pec3', s:'lg', kind:'pec', n:3, ini:'2026-10-19', fin:'2026-11-08', w:1, fw:8.3, partes:['Prueba de práctica','PEC'], title:'M1 · Temas 3, 4 y 5: verdad y falsedad, álgebra, resolución'},
+    {id:'lg-pec4', s:'lg', kind:'pec', n:4, ini:'2026-11-09', fin:'2026-11-22', w:1, fw:8.3, partes:['Prueba de práctica','PEC'], title:'M2 · Tema 1: lógica de predicados y su lenguaje'},
+    {id:'lg-pec5', s:'lg', kind:'pec', n:5, ini:'2026-11-23', fin:'2026-12-06', w:1, fw:8.3, partes:['Prueba de práctica','PEC'], title:'M2 · Tema 2: deducción natural'},
+    {id:'lg-pec6', s:'lg', kind:'pec', n:6, ini:'2026-12-07', fin:'2027-01-04', w:1, fw:8.3, partes:['Prueba de práctica','PEC'], title:'M2 · Temas 3, 4 y 5: verdad y falsedad, formas normales, resolución. El aula recomienda terminarla el 27 dic, aunque se puede entregar hasta el 4 ene'},
+    {id:'lg-pf',   s:'lg', kind:'pf',  userDate:true, w:0, fw:50, partes:[], note:'Síncrona, con supervisión en línea. Solo si la EC llega al 5. Nota mínima: 4.'}
+  ];
+  const byId = id => ACTS.find(a => a.id === id);
+  const BLOCK_TOTAL = {fp:{pec:100, pr:95}, cc:{pec:3, pr:100}, is:{pec:100, pr:100}, lg:{pec:6, pr:1}};
+  const START = ymd('2026-09-23'), END = ymd('2027-02-03');
+
+  /* ================= STATE ================= */
+  const state = {acts:{}, temario:{}};
+  ORDER.forEach(k => state.temario[k] = {});
+  function partGrades(a){ return (a.kind === 'pec' || a.kind === 'pr') && a.partes.length > 1 && a.s !== 'lg'; }
+  function blank(a){ const o = {partes:a.partes.map(() => false), nota:null}; if (partGrades(a)) o.notas = a.partes.map(() => null); if (a.userDate) o.fecha = null; return o; }
+  function partMax(a, i){ return a.s === 'fp' && a.kind === 'pec' ? [8, 2][i] : 10; }
+  function meanParts(a){
+    const n = st(a).notas; if (!n || n.some(v => v == null)) return null;
+    const sum = n.reduce((x, y) => x + y, 0);
+    return Math.round((a.s === 'fp' && a.kind === 'pec' ? sum : sum / n.length) * 100) / 100;
+  }
+  function pLetter(a, i){ const v = st(a).notas && st(a).notas[i]; return v == null ? '' : letter(v / partMax(a, i) * 10); }
+  function resetActs(){ ACTS.forEach(a => state.acts[a.id] = blank(a)); }
+  resetActs();
+
+  /* ================= HELPERS ================= */
+  function ymd(s){ const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); }
+  function today(){ const n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); }
+  function days(a,b){ return Math.round((b - a) / 864e5); }
+  const dfmt = new Intl.DateTimeFormat('es-ES', {weekday:'short', day:'numeric', month:'short'});
+  function fdate(s){ return dfmt.format(ymd(s)).replace(/\./g,'').replace(',', ''); }
+  function num(n, d=1){ return n.toLocaleString('es-ES', {minimumFractionDigits:d, maximumFractionDigits:d}); }
+  function pctTxt(v){ return num(v, v % 1 ? 1 : 0); }
+  function c(n){ return (Math.round(n*10)/10).toFixed(1); }
+  function el(tag, attrs, html){ const e = document.createElement(tag); if (attrs) for (const k in attrs) e.setAttribute(k, attrs[k]); if (html != null) e.innerHTML = html; return e; }
+  function st(a){ return state.acts[a.id]; }
+  function due(a){ return a.userDate ? st(a).fecha : a.fin; }
+  function isDone(a){ return a.partes.length ? st(a).partes.every(Boolean) : st(a).nota != null; }
+  function label(a){ return a.kind === 'pf' ? 'Prueba final' : a.kind === 'rec' ? 'PR 1 · recuperación' : a.kind === 'ini' ? 'Cuestionario inicial' : (a.kind === 'pec' ? 'PEC ' : 'PR ') + a.n; }
+  function inSubj(s, kind){ return ACTS.filter(a => a.s === s && (!kind || a.kind === kind)); }
+  function recNeed(t){
+    const p = byId('is-pr1'), n = st(p).nota;
+    if (n != null) return n < 3.5 ? 'obligatoria' : n < 5 ? 'opcional' : 'no';
+    if (t > ymd(p.fin) && !isDone(p)) return 'obligatoria';
+    return 'depende';
+  }
+  function notaEff(a){
+    if (a.id !== 'is-pr1') return st(a).nota;
+    const n = st(a).nota, r = st(byId('is-rec')).nota;
+    if (r == null) return n;
+    const capped = Math.min(r, 5);
+    return n == null ? capped : Math.max(n, capped);
+  }
+
+  /* ================= EVENTOS ================= */
+  let eventos = [];
+  function esc(x){ return String(x).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
+  function evValid(e){ return e && (SUBJ[e.s] || e.s === 'personal') && typeof e.titulo === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(e.fecha || ''); }
+  function evTag(e){ return SUBJ[e.s] ? {abbr:SUBJ[e.s].abbr, short:SUBJ[e.s].short, color:'var(--' + e.s + ')'} : {abbr:'•', short:'Personal', color:'var(--muted)'}; }
+  function evKey(e){ return e.fecha + ' ' + (e.inicio || '00:00'); }
+  function evEnd(e){ return /^\d{4}-\d{2}-\d{2}$/.test(e.hasta || '') && e.hasta > e.fecha ? e.hasta : e.fecha; }
+  function evWhen(e){ return fdate(e.fecha) + (evEnd(e) !== e.fecha ? ' → ' + fdate(evEnd(e)) : '') + (/^\d{1,2}:\d{2}$/.test(e.inicio || '') ? ' · ' + e.inicio + (/^\d{1,2}:\d{2}$/.test(e.fin || '') ? '–' + e.fin : '') : ''); }
+  function evRel(t, e){ const n = days(t, ymd(e.fecha)); if (n < 0 && t <= ymd(evEnd(e))) return 'en curso'; return n === 0 ? 'hoy' : n === 1 ? 'mañana' : 'en ' + n + ' días'; }
+  function evLi(e, t, withSubj){ return '<li><span class="subj c-' + e.s + '">' + (withSubj ? evTag(e).abbr : '') + '</span><span><b>' + esc(e.titulo) + '</b> <small>· ' + esc(evWhen(e)) + (typeof e.nota === 'string' && e.nota ? ' · ' + esc(e.nota) : '') + '</small></span><span class="when">' + evRel(t, e) + '</span></li>'; }
+  function upcoming(t){ return eventos.filter(e => ymd(evEnd(e)) >= t).sort((a, b) => evKey(a) < evKey(b) ? -1 : 1); }
+
+  /* ================= PLAN DE ESTUDIO ================= */
+  const PLAN = {1:'fp', 2:'lg', 3:'cc', 4:'is', 5:'fp', 6:'lg'};
+  const WHY = {
+    1:'La PEC de Programación se entrega los miércoles: déjala cerrada hoy.',
+    2:'Temario y prueba de práctica en ALURA.',
+    3:'Las actividades de Comunicación se abren los martes: empieza la nueva.',
+    4:'Las entregas de Ingeniería del software caen en viernes.',
+    5:'La nueva PEC de Programación se abre el jueves: cuestionario y primer borrador.',
+    6:'Las PEC de Lógica se entregan en domingo.'
+  };
+  const DOW = ['dom','lun','mar','mié','jue','vie','sáb'];
+  function planFor(d){
+    const w = d.getDay();
+    if (d > END) return null;
+    if (w === 0 || w === 6) {
+      const ss = weekendSubjects(d);
+      if (!ss.length) return {s:'lg', why:'Repaso para las pruebas finales.'};
+      return {s:ss[0], multi:ss, why:'Son 4 bloques de 45 minutos, empezando por lo que vence antes.'};
+    }
+    let s = PLAN[w], why = WHY[w];
+    if (s === 'fp' && d >= ymd('2027-01-11')) {
+      const pfs = ['cc','is','lg'].map(k => byId(k + '-pf')).filter(a => st(a).fecha && ymd(st(a).fecha) >= d).sort((a, b) => ymd(st(a).fecha) - ymd(st(b).fecha));
+      s = pfs.length ? pfs[0].s : 'lg';
+      why = 'Programación ya no tiene entregas: repaso para la prueba final.';
+    }
+    return {s, why};
+  }
+  function weekendSubjects(d){
+    const doc = horario[iso(d)];
+    if (doc) {
+      const ss = [];
+      doc.bloques.forEach(b => { const k = b.s || doc.s; if ((b.t === 'estudio' || b.t === 'sesion') && !ss.includes(k)) ss.push(k); });
+      if (ss.length) return ss;
+    }
+    return ORDER.map(k => ({k, nd: ACTS.filter(a => a.s === k && due(a) && !isDone(a) && a.kind !== 'rec' && ymd(due(a)) >= d).map(a => ymd(due(a))).sort((x, y) => x - y)[0]}))
+      .filter(x => x.nd).sort((a, b) => a.nd - b.nd).slice(0, 3).map(x => x.k);
+  }
+  function nextDue(sid, t){
+    return ACTS.filter(a => a.s === sid && due(a) && !isDone(a) && ymd(due(a)) >= t && a.kind !== 'rec').sort((a, b) => ymd(due(a)) - ymd(due(b)))[0];
+  }
+  function renderPlan(t){
+    const week = document.getElementById('week'), line = document.getElementById('todayLine');
+    const mon = new Date(t.getFullYear(), t.getMonth(), t.getDate() - ((t.getDay() + 6) % 7));
+    let html = '';
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + i);
+      const p = planFor(d), isT = +d === +t;
+      html += '<li class="day' + (isT ? ' is-today' : d < t ? ' past' : '') + '"' + (isT && p ? ' style="border-color:var(--' + p.s + ')"' : '') + (p ? ' title="' + esc((p.multi ? p.multi.map(k => SUBJ[k].short).join(', ') : SUBJ[p.s].name) + ' · ' + p.why) + '"' : '') + '>' +
+        '<span class="dn">' + (isT ? 'hoy' : DOW[d.getDay()]) + ' ' + d.getDate() + '</span>' +
+        (p ? (p.multi ? '<span class="ab multi">' + p.multi.map(k => '<span class="c-' + k + '">' + SUBJ[k].abbr + '</span>').join('') + '</span><span class="nm">3 h · varias</span>'
+                      : '<span class="ab c-' + p.s + '">' + SUBJ[p.s].abbr + '</span><span class="nm">' + SUBJ[p.s].short + '</span>') : '<span class="ab">—</span>') + '</li>';
+    }
+    week.innerHTML = html;
+    const p = planFor(t);
+    if (!p) { line.textContent = 'El semestre ha terminado.'; return; }
+    if (p.multi) {
+      const nd = p.multi.map(k => nextDue(k, t)).filter(Boolean).sort((a, b) => ymd(due(a)) - ymd(due(b)))[0];
+      const names = p.multi.map(k => '<b class="c-' + k + '">' + SUBJ[k].short + '</b>');
+      line.innerHTML = 'Hoy toca <b>3 horas</b> repartidas entre ' + (names.length > 1 ? names.slice(0, -1).join(', ') + ' y ' + names[names.length - 1] : names[0]) + '. ' + p.why +
+        (nd ? ' Lo próximo que vence: <b>' + SUBJ[nd.s].abbr + ' ' + label(nd) + '</b>, ' + fdate(due(nd)) + '.' : '');
+      return;
+    }
+    const nd = nextDue(p.s, t);
+    line.innerHTML = 'Hoy toca <b class="c-' + p.s + '">' + SUBJ[p.s].name + '</b>. ' + p.why +
+      (nd ? ' Su próxima entrega: <b>' + label(nd) + '</b>, ' + fdate(due(nd)) + '.' : '');
+  }
+
+  /* ================= HORARIO DETALLADO ================= */
+  let horario = {};
+  const HHMM = /^\d{1,2}:\d{2}$/;
+  function hmin(x){ const [h, m] = x.split(':').map(Number); return h * 60 + m; }
+  function iso(d){ return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function hValid(d){ return d && /^\d{4}-\d{2}-\d{2}$/.test(d.fecha || '') && SUBJ[d.s] && Array.isArray(d.bloques) && d.bloques.every(b => b && HHMM.test(b.ini || '') && typeof b.txt === 'string' && (!b.s || SUBJ[b.s])); }
+  function studyMin(doc){ return doc.bloques.filter(b => ['estudio','sesion','repaso'].includes(b.t) && HHMM.test(b.fin || '')).reduce((acc, b) => acc + hmin(b.fin) - hmin(b.ini), 0); }
+  function fmtMin(m){ const h = Math.floor(m / 60), r = m % 60; return (h ? h + ' h' : '') + (r ? (h ? ' ' : '') + r + ' min' : '') || '0 min'; }
+  const TKIND = {estudio:'Estudio', sesion:'Sesión', repaso:'Repaso', descanso:'Pausa', sueno:'Dormir'};
+  function renderHorario(){
+    const t = today(), doc = horario[iso(t)];
+    const box = document.getElementById('hoyPlan');
+    box.hidden = !doc;
+    if (doc) {
+      const now = new Date(), nm = now.getHours() * 60 + now.getMinutes();
+      document.getElementById('hoyTotal').textContent = fmtMin(studyMin(doc)) + ' de estudio';
+      document.getElementById('hoyRows').innerHTML = doc.bloques.map(b => {
+        const hasFin = HHMM.test(b.fin || '');
+        const isNow = hasFin ? nm >= hmin(b.ini) && nm < hmin(b.fin) : b.t === 'sueno' && nm >= hmin(b.ini);
+        const bs = b.s || doc.s, study = b.t === 'estudio' || b.t === 'sesion';
+        const kind = TKIND[b.t] ? '<span class="kind' + (study ? ' c-' + bs : '') + '">' + (study && b.s ? SUBJ[bs].abbr + ' · ' : '') + TKIND[b.t] + '</span>' : '';
+        return '<li class="hrow t-' + esc(b.t || 'otro') + (isNow ? ' now' : '') + '"><span class="hr">' + esc(b.ini) + (hasFin ? '–' + esc(b.fin) : '') + '</span><span class="tx">' + kind + esc(b.txt) + (isNow ? '<span class="pill open nowpill">ahora</span>' : '') + '</span></li>';
+      }).join('');
+      box.setAttribute('data-s', doc.s);
+    }
+    const keys = Object.keys(horario).sort();
+    const all = document.getElementById('allPlan');
+    all.hidden = !keys.length;
+    if (keys.length) {
+      const first = horario[keys[0]].fecha, last = horario[keys[keys.length - 1]].fecha;
+      const upcomingStart = ymd(first) > t;
+      document.getElementById('allPlanSum').textContent = 'Horario completo: del ' + fdate(first) + ' al ' + fdate(last) + (upcomingStart ? ' (empieza en ' + days(t, ymd(first)) + ' días)' : '');
+      document.getElementById('allPlanBody').innerHTML = keys.map(k => {
+        const d = horario[k];
+        const study = d.bloques.filter(b => b.t === 'estudio' || b.t === 'sesion');
+        const firstB = d.bloques.find(b => b.t === 'estudio' || b.t === 'sesion');
+        const subs = []; study.forEach(b => { const k = b.s || d.s; if (!subs.includes(k)) subs.push(k); });
+        const head = subs.length > 1 ? subs.map(k => '<span class="subj c-' + k + '">' + SUBJ[k].abbr + '</span>').join('') + '<span>Varias</span>' : '<span class="subj c-' + d.s + '">' + SUBJ[d.s].abbr + '</span><span>' + SUBJ[d.s].short + '</span>';
+        return '<div class="dp"><div class="dp-h"><b>' + fdate(d.fecha) + '</b>' + head + '<small>' + fmtMin(studyMin(d)) + (firstB ? ' · desde ' + esc(firstB.ini) : '') + '</small></div><ol>' + study.map(b => '<li>' + esc(b.txt) + '</li>').join('') + '</ol></div>';
+      }).join('');
+    }
+  }
+
+  /* ================= CRONÓMETRO ================= */
+  const PRESETS = {
+    plan:{label:'Mi horario de hoy'},
+    semana:{label:'3 bloques · 50/10', seq:[['estudio',50],['descanso',10],['estudio',50],['descanso',20],['estudio',50],['repaso',15]]},
+    finde:{label:'Fin de semana · 4 × 45 (3 h)', seq:[['estudio',45],['descanso',10],['estudio',45],['descanso',20],['estudio',45],['descanso',10],['estudio',45]]},
+    uno:{label:'Un bloque · 50 min', seq:[['estudio',50],['descanso',10]]},
+    pomo:{label:'Pomodoro · 25/5', seq:[['estudio',25],['descanso',5],['estudio',25],['descanso',5],['estudio',25],['descanso',5],['estudio',25],['descanso',20]]}
+  };
+  const PH = {estudio:'Estudio', descanso:'Descanso', repaso:'Repaso'};
+  const BASE_TITLE = document.title;
+  let registro = {};
+  let T = null;
+  const $ = id => document.getElementById(id);
+  function buildSeq(key){
+    if (key === 'plan') {
+      const doc = horario[iso(today())];
+      if (doc) {
+        const bl = doc.bloques.filter(b => ['estudio','descanso','repaso'].includes(b.t) && HHMM.test(b.fin || ''));
+        while (bl.length && bl[0].t === 'descanso') bl.shift();
+        if (bl.length) return bl.map(b => ({t:b.t, min:hmin(b.fin) - hmin(b.ini), txt: b.t === 'descanso' ? '' : b.txt, s: b.t === 'descanso' ? null : (b.s || doc.s)}));
+      }
+      const w = today().getDay();
+      return buildSeq(w === 0 || w === 6 ? 'finde' : 'semana');
+    }
+    return PRESETS[key].seq.map(([t, min]) => ({t, min, txt:''}));
+  }
+  function defaultSubj(){ const doc = horario[iso(today())]; if (doc) return doc.s; const p = planFor(today()); return p ? p.s : 'fp'; }
+  function freshTimer(key, subj){ const seq = buildSeq(key); if (seq[0] && seq[0].s && SUBJ[seq[0].s]) subj = seq[0].s; return {date:iso(today()), key, subj, seq, idx:0, running:false, endsAt:0, remaining:seq[0].min * 60000, studyMs:0, done:false, msg:''}; }
+  function persist(){ try { localStorage.setItem('uoc-timer', JSON.stringify(T)); } catch (e) {} pushState(); }
+  function pushState(){
+    if (!T) return;
+    const p = phase();
+    saveLocal('cronometro/estado', {running: !!T.running, over: !!T.over, endsAt: T.running ? T.endsAt : null, subj: T.subj, fase: T.done ? 'fin' : p.t, fecha: iso(today()), actualizado: Date.now()});
+  }
+  function phase(){ return T.seq[T.idx]; }
+  function remainingMs(){ return T.running ? Math.max(0, T.endsAt - Date.now()) : T.remaining; }
+  function mmss(ms){ const s = Math.ceil(ms / 1000), m = Math.floor(s / 60); return String(m).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
+
+  let actx = null;
+  function ensureAudio(){ try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); } catch (e) { actx = null; } }
+  function beep(n, freq){
+    if (!actx) return;
+    try {
+      for (let i = 0; i < n; i++) {
+        const o = actx.createOscillator(), g = actx.createGain(), t0 = actx.currentTime + i * 0.4;
+        o.frequency.value = freq || 880; o.connect(g); g.connect(actx.destination);
+        g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.35, t0 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.3);
+        o.start(t0); o.stop(t0 + 0.35);
+      }
+    } catch (e) {}
+  }
+  let wl = null;
+  async function wakeOn(){ try { if ('wakeLock' in navigator && !wl) { wl = await navigator.wakeLock.request('screen'); wl.addEventListener('release', () => { wl = null; }); } } catch (e) { wl = null; } }
+  function wakeOff(){ try { if (wl) wl.release(); } catch (e) {} wl = null; }
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && T && T.running) wakeOn(); });
+
+  function logStudy(ms){
+    const min = Math.round(ms / 60000);
+    if (min < 1) return;
+    const d = iso(today());
+    const cur = registro[d] ? {fecha:d, min:Object.assign({}, registro[d].min)} : {fecha:d, min:{}};
+    cur.min[T.subj] = (cur.min[T.subj] || 0) + min;
+    registro[d] = cur;
+    saveLocal('registro/' + d, cur);
+    renderLog();
+  }
+  function isFocusPhase(p){ return p && (p.t === 'estudio' || p.t === 'repaso'); }
+  const MAX_EXTRA = 60 * 60000;
+  function extraMs(){ return T.over ? Math.min(MAX_EXTRA, Math.max(0, Date.now() - T.endsAt)) : 0; }
+  function spentMs(p){ return T.over ? p.min * 60000 + extraMs() : T.running ? p.min * 60000 - Math.max(0, T.endsAt - Date.now()) : p.min * 60000 - T.remaining; }
+  function enterOvertime(silent){
+    T.over = true; T.lastPing = 0;
+    T.msg = silent ? 'El bloque terminó mientras no estabas; sigue contando como tiempo extra.' : '¡Tiempo cumplido! Sigue si quieres: cuenta como tiempo extra y te aviso cada 10 minutos. Pulsa «Terminar bloque» cuando pares.';
+    if (!silent) beep(3, 988);
+    persist(); renderTimer();
+  }
+  function overPing(k){
+    T.lastPing = k;
+    T.msg = 'Llevas ' + (k * 10) + ' minutos de tiempo extra. Pulsa «Terminar bloque» cuando pares.';
+    beep(2, 740);
+    try { if (navigator.vibrate) navigator.vibrate([250, 120, 250]); } catch (e) {}
+    ['tmr', 'focus'].forEach(id => { const n = $(id); n.classList.remove('ping'); void n.offsetWidth; n.classList.add('ping'); });
+    persist();
+  }
+  function finishPhase(mode){
+    if (mode === true) mode = 'away';
+    if (mode === false || mode === undefined) mode = 'auto';
+    const silent = mode !== 'auto';
+    const p = phase();
+    if (isFocusPhase(p)) { logStudy(T.studyMs + spentMs(p)); }
+    T.studyMs = 0; T.over = false;
+    if (T.idx >= T.seq.length - 1) {
+      T.running = false; T.done = true; T.remaining = 0; T.msg = 'Sesión terminada. ¡Buen trabajo!';
+      if (!silent) beep(4, 660); wakeOff();
+    } else {
+      T.idx++;
+      const n = phase();
+      T.remaining = n.min * 60000;
+      if (n.s && SUBJ[n.s] && n.t !== 'descanso') { T.subj = n.s; $('tSubj').value = n.s; }
+      if (n.t === 'descanso' && mode !== 'away') { T.running = true; T.endsAt = Date.now() + T.remaining; T.msg = 'Descanso. Cuando pite, vuelve a la mesa y pulsa «Empezar».'; if (!silent) beep(2, 880); }
+      else { T.running = false; T.msg = mode === 'away' ? 'Fase terminada mientras no estabas.' : mode === 'manual' ? '' : 'Descanso terminado. Pulsa «Empezar» cuando estés en la mesa.'; if (!silent) beep(3, 988); wakeOff(); }
+    }
+    persist(); renderTimer();
+  }
+  function startPause(){
+    ensureAudio();
+    if (T.done) { T = freshTimer(T.key, T.subj); }
+    if (T.over) { finishPhase('manual'); return; }
+    if (T.running) { T.remaining = Math.max(0, T.endsAt - Date.now()); T.running = false; T.msg = 'En pausa.'; wakeOff(); }
+    else { T.endsAt = Date.now() + T.remaining; T.running = true; T.msg = ''; wakeOn(); }
+    persist(); renderTimer();
+  }
+  function skip(){ ensureAudio(); if (T.done) return; finishPhase('manual'); }
+  function resetTimer(){
+    const p = phase();
+    if (!T.done && isFocusPhase(p)) { const spent = spentMs(p); if (spent > 0) logStudy(spent); }
+    T = freshTimer($('tPreset').value, $('tSubj').value); wakeOff(); persist(); renderTimer();
+  }
+  function renderTimer(){
+    const p = phase(), rem = T.done ? 0 : remainingMs(), over = !!T.over && !T.done;
+    const col = p.t === 'descanso' ? 'var(--ok)' : 'var(--' + T.subj + ')';
+    const label = T.done ? 'Terminado' : (over ? 'Tiempo extra · ' : '') + PH[p.t] + (p.t !== 'descanso' ? ' · ' + SUBJ[T.subj].abbr : '') + (p.t === 'estudio' ? ' · bloque ' + (T.seq.slice(0, T.idx + 1).filter(x => x.t === 'estudio').length) + ' de ' + T.seq.filter(x => x.t === 'estudio').length : '');
+    const task = T.done ? '' : p.txt || (p.t === 'descanso' ? 'Levántate, bebe agua, mueve el cuerpo.' : p.t === 'repaso' ? 'Escribe de memoria lo que has aprendido hoy.' : SUBJ[T.subj].name);
+    $('tPhase').textContent = label; $('tPhase').style.color = col; $('fPhase').textContent = label; $('fPhase').style.color = col;
+    const shown = over ? '+' + mmss(extraMs()) : mmss(rem);
+    $('tTime').textContent = shown; $('fTime').textContent = shown;
+    $('tTask').textContent = task; $('fTask').textContent = task;
+    $('tMsg').textContent = T.msg || (T.running ? '' : T.idx === 0 && rem === p.min * 60000 ? 'Mantén esta página abierta: pitará al acabar cada fase. Al acabar un bloque de estudio sigue contando hasta que pulses «Terminar bloque».' : '');
+    const total = p.min * 60000;
+    $('tBar').style.width = (T.done || over ? 100 : Math.min(100, (1 - rem / total) * 100)) + '%'; $('tBar').style.background = col;
+    const startTxt = over ? 'Terminar bloque' : T.running ? 'Pausa' : T.done ? 'Empezar de nuevo' : 'Empezar';
+    $('tSkip').hidden = over; $('fSkip').hidden = over;
+    $('tStart').textContent = startTxt; $('fStart').textContent = startTxt;
+    $('tStart').style.background = col;
+    $('tSeq').innerHTML = T.seq.map((x, i) => '<li class="' + (i < T.idx || T.done ? 'done' : i === T.idx ? 'cur' : '') + '">' + (x.t === 'estudio' ? 'E' : x.t === 'repaso' ? 'R' : 'D') + ' ' + x.min + '′</li>').join('');
+    document.title = T.running ? shown + ' · ' + (over ? 'Tiempo extra' : PH[p.t]) + ' — ' + BASE_TITLE : BASE_TITLE;
+  }
+  function renderLog(){
+    const t = today(), d = iso(t);
+    const tot = r => r ? Object.values(r.min || {}).reduce((a, b) => a + (+b || 0), 0) : 0;
+    const mon = new Date(t.getFullYear(), t.getMonth(), t.getDate() - ((t.getDay() + 6) % 7));
+    const bySubj = {}; let week = 0;
+    for (let i = 0; i < 7; i++) {
+      const r = registro[iso(new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + i))];
+      if (!r) continue;
+      for (const k in r.min) if (SUBJ[k]) { bySubj[k] = (bySubj[k] || 0) + (+r.min[k] || 0); week += +r.min[k] || 0; }
+    }
+    $('tLog').innerHTML = '<span>Hoy: <b>' + fmtMin(tot(registro[d])) + '</b></span><span>Esta semana: <b>' + fmtMin(week) + '</b></span>' +
+      ORDER.filter(k => bySubj[k]).map(k => '<span><span class="subj c-' + k + '">' + SUBJ[k].abbr + '</span> ' + fmtMin(bySubj[k]) + '</span>').join('');
+  }
+  function initTimer(){
+    $('tSubj').innerHTML = ORDER.map(k => '<option value="' + k + '">' + SUBJ[k].short + '</option>').join('');
+    $('tPreset').innerHTML = Object.keys(PRESETS).map(k => '<option value="' + k + '">' + PRESETS[k].label + '</option>').join('');
+    let saved = null;
+    try { saved = JSON.parse(localStorage.getItem('uoc-timer') || 'null'); } catch (e) {}
+    if (saved && saved.date === iso(today()) && Array.isArray(saved.seq) && saved.seq.length && SUBJ[saved.subj] && PRESETS[saved.key]) {
+      T = saved;
+      if (T.running && T.endsAt <= Date.now()) { if (isFocusPhase(phase())) { if (!T.over) enterOvertime(true); } else finishPhase('away'); }
+    } else T = freshTimer('plan', defaultSubj());
+    $('tSubj').value = T.subj; $('tPreset').value = T.key;
+    $('tSubj').addEventListener('change', () => { T.subj = $('tSubj').value; persist(); renderTimer(); });
+    $('tPreset').addEventListener('change', () => { if (T.running && !confirmSwitch()) { $('tPreset').value = T.key; return; } resetTimer(); });
+    $('tStart').addEventListener('click', startPause); $('fStart').addEventListener('click', startPause);
+    $('tSkip').addEventListener('click', skip); $('fSkip').addEventListener('click', skip);
+    $('tReset').addEventListener('click', resetTimer);
+    $('tFocus').addEventListener('click', () => { $('focus').hidden = false; try { const r = $('focus').requestFullscreen && $('focus').requestFullscreen(); if (r && r.catch) r.catch(() => {}); } catch (e) {} });
+    $('fExit').addEventListener('click', () => { $('focus').hidden = true; try { if (document.fullscreenElement) document.exitFullscreen(); } catch (e) {} });
+    document.addEventListener('keydown', e => {
+      if (e.code !== 'Space' || e.ctrlKey || e.metaKey || e.altKey) return;
+      const tag = (document.activeElement && document.activeElement.tagName) || '';
+      if (['INPUT','SELECT','TEXTAREA','BUTTON'].includes(tag)) return;
+      e.preventDefault(); startPause();
+    });
+    renderTimer(); renderLog();
+    setInterval(() => {
+      if (!T.running) return;
+      if (T.endsAt <= Date.now()) {
+        if (isFocusPhase(phase())) {
+          if (!T.over) enterOvertime(false);
+          else if (Date.now() - T.endsAt >= MAX_EXTRA) { finishPhase('auto'); T.msg = 'Bloque cerrado solo tras 60 min de tiempo extra. Descanso.'; renderTimer(); }
+          else {
+            const k = Math.floor((Date.now() - T.endsAt) / 600000);
+            if (k >= 1 && k > (T.lastPing || 0)) overPing(k);
+            renderTimer();
+          }
+        } else finishPhase('auto');
+      } else renderTimer();
+    }, 250);
+  }
+  function confirmSwitch(){ return true; }
+  function timerDataChanged(){
+    if (T && T.key === 'plan' && !T.running && T.idx === 0 && !T.done) { const subj = T.subj; T = freshTimer('plan', horario[iso(today())] ? horario[iso(today())].s : subj); $('tSubj').value = T.subj; renderTimer(); }
+  }
+
+  /* ================= STORAGE (Autónomo con LocalStorage) ================= */
+  const saveEl = document.getElementById('saveState');
+  function setSave(txt, bad){ saveEl.textContent = txt; saveEl.classList.toggle('bad', !!bad); }
+
+  function getLocal(key, defVal){
+    try {
+      const v = localStorage.getItem('uoc_' + key);
+      return v ? JSON.parse(v) : defVal;
+    } catch(e) {
+      return defVal;
+    }
+  }
+
+  function saveLocal(path, body){
+    try {
+      localStorage.setItem('uoc_doc_' + path, JSON.stringify(body));
+      const parts = path.split('/');
+      if (parts.length === 2) {
+        const col = parts[0], id = parts[1];
+        let map = getLocal('col_' + col, {});
+        map[id] = body;
+        localStorage.setItem('uoc_col_' + col, JSON.stringify(map));
+      }
+      setSave('Guardado');
+      setTimeout(() => setSave('Guardado automático'), 1500);
+    } catch (e) {
+      setSave('Error de almacenamiento local', true);
+    }
+  }
+
+  function saveAct(a){
+    const s = st(a);
+    const body = {partes:s.partes.slice(), nota:s.nota};
+    if (s.notas) body.notas = s.notas.slice();
+    if (a.userDate) body.fecha = s.fecha;
+    saveLocal('actividades/' + a.id, body);
+  }
+
+  function saveTemario(sid){
+    saveLocal('temario/' + SUBJ[sid].temarioDoc, {hechos:Object.assign({}, state.temario[sid])});
+  }
+
+  /* ================= TABS + PANELS ================= */
+  let current = 'fp';
+  try { const saved = localStorage.getItem('uoc-tab'); if (ORDER.includes(saved)) current = saved; } catch (e) {}
+  if (ORDER.includes(location.hash.slice(1))) current = location.hash.slice(1);
+  const tabsEl = document.getElementById('tabs'), panelsEl = document.getElementById('panels');
+  const ui = {};
+  const rows = {};
+
+  function selectTab(sid){
+    current = sid;
+    ORDER.forEach(k => { ui[k].tab.setAttribute('aria-selected', String(k === sid)); ui[k].tab.tabIndex = k === sid ? 0 : -1; ui[k].panel.hidden = k !== sid; });
+    try { localStorage.setItem('uoc-tab', sid); } catch (e) {}
+  }
+  function goTo(a){
+    selectTab(a.s);
+    const r = rows[a.id].li;
+    r.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'center'});
+    r.classList.add('flash'); setTimeout(() => r.classList.remove('flash'), 900);
+  }
+
+  ORDER.forEach((sid, idx) => {
+    const S = SUBJ[sid];
+    const tab = el('button', {role:'tab', class:'tab', 'data-s':sid, id:'tab-' + sid, 'aria-controls':'panel-' + sid}, '<span class="subj c-' + sid + '">' + S.abbr + '</span>' + S.short);
+    tab.addEventListener('click', () => selectTab(sid));
+    tab.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      const o = ORDER[(idx + (e.key === 'ArrowRight' ? 1 : ORDER.length - 1)) % ORDER.length];
+      selectTab(o); ui[o].tab.focus();
+    });
+    tabsEl.appendChild(tab);
+
+    const panel = el('div', {role:'tabpanel', class:'subject', id:'panel-' + sid, 'aria-labelledby':'tab-' + sid, 'data-s':sid});
+    panel.innerHTML =
+      '<div class="subj-head"><div class="eyebrow">' + S.meta + '</div><h2>' + S.name + '</h2><p class="sub">' + S.desc + '</p></div>' +
+      '<div class="duo">' +
+        '<section class="panel"><h3 class="label">Nota estimada</h3><div class="code" data-r="formula"></div>' +
+          '<div class="grade-row"><div class="grade-main"><span class="big" data-r="final">—</span><small data-r="finalSub"></small></div><div class="blocks" data-r="blocks"></div></div>' +
+          '<p class="need" data-r="need"></p></section>' +
+        '<section class="panel"><div class="sec-head"><h3>Para aprobar</h3><span class="aside">Se tiene que cumplir todo</span></div><ul class="reqs" data-r="reqs"></ul></section>' +
+      '</div>' +
+      '<div class="sec evsec" data-r="evsec" hidden><div class="sec-head"><h3>Sesiones y eventos</h3></div><ul class="evlist" data-r="evlist"></ul></div>' +
+      '<div class="sec"><div class="sec-head"><h3>Entregas</h3><span class="aside mono" data-r="parts"></span></div><ol class="acts" data-r="acts"></ol></div>' +
+      '<div class="duo">' +
+        '<section class="panel"><div class="sec-head"><h3>Temario</h3><span class="aside mono" data-r="tmCount"></span></div><p style="font-size:13.5px;color:var(--muted)">Marca cada bloque cuando lo tengas dominado.</p><ul class="temario" data-r="temario"></ul></section>' +
+        '<section class="panel"><h3>Letra pequeña del plan docente</h3><dl class="rules">' + S.rules.map(r => '<div><dt>' + r[0] + '</dt><dd>' + r[1] + '</dd></div>').join('') + '</dl><p class="foot">' + S.foot + '</p></section>' +
+      '</div>';
+    panelsEl.appendChild(panel);
+    const q = k => panel.querySelector('[data-r="' + k + '"]');
+    ui[sid] = {tab, panel, formula:q('formula'), final:q('final'), finalSub:q('finalSub'), blocks:q('blocks'), need:q('need'), reqs:q('reqs'), parts:q('parts'), acts:q('acts'), tmCount:q('tmCount'), temario:q('temario'), evsec:q('evsec'), evlist:q('evlist'), tm:[]};
+
+    inSubj(sid).forEach(a => ui[sid].acts.appendChild(buildRow(a)));
+
+    S.temario.forEach(([n, t], i) => {
+      const id = 't' + (i + 1);
+      const li = el('li'), lab = el('label', {class:'chk'});
+      const cb = el('input', {type:'checkbox', id:'tm-' + sid + '-' + id});
+      cb.addEventListener('change', () => { if (cb.checked) state.temario[sid][id] = true; else delete state.temario[sid][id]; saveTemario(sid); refreshTemario(); });
+      lab.appendChild(cb); lab.appendChild(el('span', null, '<span class="n">' + n + '</span>' + t));
+      li.appendChild(lab); ui[sid].temario.appendChild(li);
+      ui[sid].tm.push({id, cb});
+    });
+  });
+
+  function gradeInput(a){
+    const g = el('div', {class:'act-grade'});
+    if (a.noGrade) return {g, inp:null};
+    g.appendChild(el('label', {for:'g-' + a.id}, 'Nota'));
+    const inp = el('input', {type:'text', id:'g-' + a.id, inputmode:'decimal', placeholder:'—', autocomplete:'off'});
+    function parse(){
+      const raw = inp.value.trim().replace(',', '.');
+      if (raw === '') return {ok:true, v:null};
+      const v = Number(raw);
+      if (!isFinite(v) || v < 0 || v > 10) return {ok:false};
+      return {ok:true, v:Math.round(v * 100) / 100};
+    }
+    inp.addEventListener('input', () => {
+      const r = parse();
+      inp.setAttribute('aria-invalid', r.ok ? 'false' : 'true');
+      inp.title = r.ok ? '' : 'Escribe una nota entre 0 y 10';
+      if (r.ok) { st(a).nota = r.v; refresh(); }
+    });
+    inp.addEventListener('change', () => { if (parse().ok) saveAct(a); });
+    g.appendChild(inp);
+    return {g, inp};
+  }
+
+  function buildRow(a){
+    const li = el('li', {class:'act', id:'act-' + a.id, 'data-s':a.s, 'data-kind':a.kind});
+    let idHtml;
+    if (a.kind === 'pf') idHtml = '<span class="num">PF</span>';
+    else if (a.kind === 'ini') idHtml = '<span class="num sm">Inicio</span>';
+    else if (a.kind === 'rec') idHtml = '<span class="tag">REC</span><span class="num">1</span>';
+    else idHtml = '<span class="tag">' + (a.kind === 'pec' ? 'PEC' : 'PR') + '</span><span class="num">' + a.n + '</span>';
+    li.appendChild(el('div', {class:'act-id', title: a.title || ''}, idHtml));
+    const when = el('div', {class:'act-when'});
+    let dateInp = null;
+    if (a.userDate) {
+      const df = el('label', {class:'datefield', for:'d-' + a.id}, 'Fecha');
+      dateInp = el('input', {type:'date', id:'d-' + a.id, min:'2026-10-01', max:'2027-03-31'});
+      dateInp.addEventListener('change', () => { st(a).fecha = /^\d{4}-\d{2}-\d{2}$/.test(dateInp.value) ? dateInp.value : null; saveAct(a); refresh(); });
+      df.appendChild(dateInp); when.appendChild(df);
+    } else if (a.fin && !a.ini) {
+      when.appendChild(el('span', {class:'dates'}, 'Entrega ' + fdate(a.fin)));
+    } else if (a.fin) {
+      when.appendChild(el('span', {class:'dates'}, fdate(a.ini) + '<span class="arrow">→</span>' + fdate(a.fin)));
+    } else {
+      when.appendChild(el('span', {class:'dates'}, 'Desde el ' + fdate(a.ini)));
+    }
+    const pill = el('span', {class:'pill'});
+    when.appendChild(pill);
+    li.appendChild(when);
+    const parts = el('div', {class:'act-parts'});
+    const pins = [];
+    const boxes = a.partes.map((p, i) => {
+      const lab = el('label', {class:'chk'});
+      const cb = el('input', {type:'checkbox', id:'cb-' + a.id + '-' + i});
+      cb.addEventListener('change', () => { st(a).partes[i] = cb.checked; saveAct(a); refresh(); });
+      lab.appendChild(cb); lab.appendChild(el('span', null, p));
+      if (partGrades(a)) {
+        const wrap = el('span', {class:'pg'});
+        const pin = el('input', {type:'text', class:'pin', id:'pg-' + a.id + '-' + i, inputmode:'decimal', placeholder:'/' + partMax(a, i), autocomplete:'off', 'aria-label':'Nota de ' + p + ' sobre ' + partMax(a, i)});
+        const mx = partMax(a, i);
+        const parse = () => { const raw = pin.value.trim().replace(',', '.'); if (raw === '') return {ok:true, v:null}; const v = Number(raw); return !isFinite(v) || v < 0 || v > mx ? {ok:false} : {ok:true, v:Math.round(v * 100) / 100}; };
+        pin.addEventListener('input', () => {
+          const r = parse();
+          pin.setAttribute('aria-invalid', r.ok ? 'false' : 'true');
+          pin.title = r.ok ? '' : 'Escribe una nota entre 0 y ' + mx;
+          if (!r.ok) return;
+          st(a).notas[i] = r.v;
+          st(a).nota = meanParts(a);
+          refresh();
+        });
+        pin.addEventListener('change', () => { if (parse().ok) saveAct(a); });
+        pins.push(pin);
+        wrap.appendChild(lab); wrap.appendChild(pin);
+        const lt = el('span', {class:'plt'}); lt.dataset.i = i; wrap.appendChild(lt);
+        parts.appendChild(wrap);
+      } else parts.appendChild(lab);
+      return cb;
+    });
+    if (a.title) parts.appendChild(el('span', {class:'note'}, a.title));
+    if (a.note) parts.appendChild(el('span', {class:'note'}, a.note));
+    li.appendChild(parts);
+    const {g, inp} = gradeInput(a);
+    li.appendChild(g);
+    li.appendChild(el('div', {class:'act-weight'}, (a.fwTxt || pctTxt(a.fw) + ' %') + '<small>' + (a.fwSub || 'de la nota final') + '</small>'));
+    rows[a.id] = {li, pill, boxes, inp, dateInp, pins};
+    return li;
+  }
+
+  /* ================= TIMELINE ================= */
+  const LANES = [['fp','pec','FP · PEC'],['fp','pr','FP · PR'],['cc','pec','CC · PEC'],['cc','pr','CC · PR'],['is','pec','IS · PEC'],['is','pr','IS · PR'],['lg','pec','LG · PEC'],['all','pf','PF']];
+  const span = END - START;
+  const pct = d => Math.max(0, Math.min(100, (d - START) / span * 100));
+  const tlLabels = document.getElementById('tlLabels'), tlBody = document.getElementById('tlBody'), axis = document.getElementById('axis');
+  tlLabels.appendChild(el('span'));
+  [['2026-10-01','oct'],['2026-11-01','nov'],['2026-12-01','dic'],['2027-01-01','ene'],['2027-02-01','feb']].forEach(([d, t]) => {
+    const p = pct(ymd(d));
+    const tk = el('span', {class:'tick' + (p > 93 ? ' end' : '')}, t);
+    tk.style.left = p + '%'; axis.appendChild(tk);
+  });
+  const lanes = {}, bars = {};
+  LANES.forEach(([s, k, t]) => {
+    tlLabels.appendChild(el('span', s === 'all' ? {style:'color:var(--muted)'} : {class:'c-' + s}, t));
+    const tr = el('div', {class:'track'}); tlBody.appendChild(tr); lanes[s + k] = tr;
+  });
+  tlLabels.appendChild(el('span', {style:'color:var(--muted)'}, 'Entregas'));
+  const loadRow = el('div', {class:'loadrow'}); tlBody.appendChild(loadRow);
+  tlLabels.appendChild(el('span'));
+  tlBody.appendChild(el('div'));
+  const weeks = [];
+  for (let m = ymd('2026-09-21'); m <= END; m = new Date(m.getFullYear(), m.getMonth(), m.getDate() + 7)) {
+    const next = new Date(m.getFullYear(), m.getMonth(), m.getDate() + 7);
+    const cell = el('span', {class:'wk'});
+    cell.style.left = pct(m) + '%'; cell.style.width = (pct(next) - pct(m)) + '%';
+    loadRow.appendChild(cell); weeks.push({from:m, to:next, cell});
+  }
+  function mkBar(a, lane, text){
+    const b = el('a', {class:'bar ' + a.s, href:'#act-' + a.id}, text);
+    b.addEventListener('click', ev => { ev.preventDefault(); goTo(a); });
+    lane.appendChild(b); bars[a.id] = b; return b;
+  }
+  function place(b, from, to){ const s = ymd(from), e = ymd(to); e.setDate(e.getDate() + 1); b.style.left = pct(s) + '%'; b.style.width = Math.max(pct(e) - pct(s), 1) + '%'; }
+  ACTS.filter(a => a.kind === 'pec' || a.kind === 'pr').forEach(a => {
+    const b = mkBar(a, lanes[a.s + a.kind], String(a.n));
+    b.title = SUBJ[a.s].short + ' · ' + label(a) + ' · ' + (a.ini ? fdate(a.ini) + ' – ' : 'entrega ') + fdate(a.fin);
+    place(b, a.ini || a.tlIni, a.fin);
+  });
+  const userDated = ACTS.filter(a => a.userDate);
+  userDated.forEach(a => mkBar(a, a.kind === 'pf' ? lanes['allpf'] : lanes[a.s + 'pr'], a.kind === 'pf' ? a.s.toUpperCase() : 'R'));
+  const pfTbd = el('span', {class:'tbd'});
+  pfTbd.style.left = pct(ymd('2027-01-14')) + '%';
+  lanes['allpf'].appendChild(pfTbd);
+  const todayLine = el('div', {class:'today'}, '<span>hoy</span>');
+  tlBody.appendChild(todayLine);
+
+  /* ================= GRADES ================= */
+  function block(sid, kind){
+    let sum = 0, wg = 0, wr = 0, graded = 0;
+    const list = inSubj(sid, kind);
+    list.forEach(a => { const n = notaEff(a); if (n != null) { sum += a.w * n; wg += a.w; graded++; } else wr += a.w; });
+    return {sum, wg, wr, graded, count:list.length, total:BLOCK_TOTAL[sid][kind], avg: wg ? sum / wg : null};
+  }
+  function needBlock(B, min){ return B.wr > 0 ? (min * B.total - B.sum) / B.wr : null; }
+  function reqStatus(avg, need, min, graded){
+    if (need == null) return avg != null && avg >= min ? ['ok','Cumplido'] : ['crit','No cumplido'];
+    if (need <= 0) return ['ok','Asegurado'];
+    if (need > 10) return ['crit','No alcanzable'];
+    if (!graded) return ['','Sin notas aún'];
+    return [need > 7 ? 'warn' : '', 'En curso'];
+  }
+  function needTxt(need, graded, what){ return need != null && need > 0 && need <= 10 && graded ? 'Necesitas una media de <b>' + num(need) + '</b> en ' + what + '.' : null; }
+  function deliveredReq(sid, kinds, t){
+    const list = ACTS.filter(a => a.s === sid && kinds.includes(a.kind));
+    const done = list.filter(isDone).length;
+    const late = list.filter(a => !isDone(a) && a.fin && t > ymd(a.fin)).length;
+    return done === list.length ? ['ok','Cumplido'] : late ? ['crit','Falta alguna'] : ['', done + ' de ' + list.length];
+  }
+  function blk(label, sid, v, sub){ return '<div class="blk"><span><span class="subj c-' + sid + '">■</span> ' + label + '</span><b>' + (v == null ? '—' : num(v)) + '</b><span>' + sub + '</span></div>'; }
+  const vv = x => x == null ? '?' : c(x);
+  function pfNeedTxt(ec){
+    const x = (5 - 0.7 * ec) / 0.3;
+    return x > 10 ? 'Con esta EC no llegas al 5 ni con un 10 en la prueba final.' : 'Con esta EC, en la prueba final necesitas al menos un <b>' + num(Math.max(4, x)) + '</b>.';
+  }
+  function pfReq(a){
+    const pf = st(a).nota, f = st(a).fecha;
+    return pf != null ? (pf >= 4 ? ['ok','Cumplido'] : ['crit','No cumplido']) : ['', f ? fdate(f) : 'Fecha por confirmar'];
+  }
+
+  function computeFP(t){
+    const P = block('fp','pec'), R = block('fp','pr');
+    const fin = P.avg != null && R.avg != null ? 0.3 * P.avg + 0.7 * R.avg : null;
+    const formula = 'nota = 0.3 * <span class="k">pec</span> + 0.7 * <span class="k">pr</span>;\n     = 0.3 * <span class="v">' + vv(P.avg) + '</span> + 0.7 * <span class="v">' + vv(R.avg) + '</span>' + (fin != null ? ' = <span class="v">' + c(fin) + '</span>' : '');
+    const secured = 0.3 * P.sum / P.total + 0.7 * R.sum / R.total;
+    const remaining = 0.3 * P.wr / P.total + 0.7 * R.wr / R.total;
+    const nF = remaining > 0 ? (5 - secured) / remaining : null;
+    let need;
+    if (!P.graded && !R.graded) need = 'Escribe la nota de cada entrega cuando la publiquen y aquí verás tu media y qué necesitas en lo que queda para el 5.';
+    else if (nF == null) need = fin >= 5 ? 'Todas las notas puestas: <b>aprobado</b> si cumples los mínimos.' : 'Todas las notas puestas.';
+    else if (nF <= 0) need = 'Con lo que ya tienes, el 5 final está <b>asegurado</b> (falta cumplir los mínimos de cada bloque).';
+    else if (nF > 10) need = 'Con lo que queda ya no se llega al 5 final, ni sacando un 10 en todo.';
+    else need = 'Para llegar al 5 necesitas una media de <b>' + num(nF) + '</b> en lo que queda.';
+    const nP = needBlock(P, 4), nR = needBlock(R, 5);
+    return {
+      formula, fin, need,
+      finalSub: fin != null ? 'Con la media de lo evaluado hasta ahora' : (P.graded || R.graded ? 'Falta nota de ' + (P.avg == null ? 'alguna PEC' : 'alguna práctica') : 'Aún no hay notas'),
+      blocks: blk('PEC · 30 %', 'fp', P.avg, P.graded + ' de 6 con nota') + blk('Prácticas · 70 %', 'fp', R.avg, R.graded + ' de 3 con nota'),
+      summary: {v:fin, sub:'nota final estimada'},
+      reqs: [
+        {code:'entregadas(PR) == 3', st:deliveredReq('fp', ['pr'], t), txt:'Las tres prácticas, cada una con su algoritmo y su programa en C.'},
+        {code:'pec >= 4.0', st:reqStatus(P.avg, nP, 4, P.graded), txt:needTxt(nP, P.graded, 'las PEC que quedan') || 'Media ponderada de las PEC (1 a 5 valen 18 % cada una; la 6, un 10 %).'},
+        {code:'pr >= 5.0', st:reqStatus(R.avg, nR, 5, R.graded), txt:needTxt(nR, R.graded, 'las prácticas que quedan') || 'La PR 3 sola pesa el 55 % del bloque: es la entrega que más decide.'},
+        {code:'nota >= 5.0', st:reqStatus(fin, nF, 5, P.graded || R.graded), txt:'Nota final = 30 % PEC + 70 % prácticas. No hay examen para compensar.'}
+      ]
+    };
+  }
+
+  function computeCC(t){
+    const P = block('cc','pec'), R = block('cc','pr'), pfA = byId('cc-pf');
+    const pf = st(pfA).nota;
+    const ec = P.avg != null && R.avg != null ? 0.4 * P.avg + 0.6 * R.avg : null;
+    const passEC = ec != null && P.avg >= 5 && R.avg >= 5;
+    const allGraded = P.wr === 0 && R.wr === 0;
+    let fin = null, finalSub;
+    if (allGraded && !passEC) { fin = ec; finalSub = 'EC no superada: la nota final es la de la EC'; }
+    else if (allGraded && pf != null) {
+      if (pf < 4) { fin = pf; finalSub = 'PF por debajo de 4: cuenta solo la PF'; }
+      else { fin = 0.7 * ec + 0.3 * pf; finalSub = '70 % EC + 30 % prueba final'; }
+    } else finalSub = !P.graded && !R.graded ? 'Aún no hay notas' : !allGraded ? 'Faltan notas de la evaluación continua' : 'Falta la nota de la prueba final';
+    const formula =
+      'ec   = 0.4 * <span class="k">pec</span> + 0.6 * <span class="k">pr</span>;\n' +
+      '     = 0.4 * <span class="v">' + vv(P.avg) + '</span> + 0.6 * <span class="v">' + vv(R.avg) + '</span>' + (ec != null ? ' = <span class="v">' + c(ec) + '</span>' : '') + '\n' +
+      'nota = 0.7 * <span class="k">ec</span> + 0.3 * <span class="k">pf</span>;   <span class="cm">// si pf >= 4.0</span>';
+    const nP = needBlock(P, 5), nR = needBlock(R, 5);
+    let need;
+    if (!P.graded && !R.graded) need = 'Escribe la nota de cada entrega cuando la publiquen. Con tu nota de EC verás qué necesitas en la prueba final.';
+    else if (fin != null) need = !passEC ? 'La EC no está superada (hace falta un 5 en PEC y un 5 en prácticas).' : fin >= 5 && pf >= 4 ? 'Todas las notas puestas: <b>aprobado</b>.' : 'Todas las notas puestas.';
+    else if (allGraded) need = pfNeedTxt(ec);
+    else {
+      const parts = [];
+      if (P.avg == null) parts.push('falta alguna nota de PEC'); else if (nP != null && nP > 0 && nP <= 10) parts.push('en las PEC que quedan necesitas media <b>' + num(nP) + '</b>');
+      if (R.avg == null) parts.push('falta alguna nota de prácticas'); else if (nR != null && nR > 0 && nR <= 10) parts.push('en las prácticas que quedan, <b>' + num(nR) + '</b>');
+      need = parts.length ? 'Para aprobar la EC: ' + parts.join('; ') + '.' : 'Vas bien para aprobar la EC.';
+    }
+    return {
+      formula, fin, finalSub, need,
+      blocks: blk('PEC · 40 % EC', 'cc', P.avg, P.graded + ' de 3 con nota') + blk('Prácticas · 60 % EC', 'cc', R.avg, R.graded + ' de 4 con nota') + blk('EC · 70 %', 'cc', ec, pf == null ? 'PF sin nota' : 'PF: ' + num(pf)),
+      summary: fin != null ? {v:fin, sub:'nota final'} : ec != null ? {v:ec, sub: allGraded ? 'nota de EC (falta PF)' : 'EC estimada'} : {v:null, sub:'nota final estimada'},
+      reqs: [
+        {code:'entregadas(PEC) == 3 && entregadas(PR) == 4', st:deliveredReq('cc', ['pec','pr'], t), txt:'Las tres PEC y las cuatro partes de la práctica (la PR 1 incluye el correo y el vídeo).'},
+        {code:'pec >= 5.0', st:reqStatus(P.avg, nP, 5, P.graded), txt:needTxt(nP, P.graded, 'las PEC que quedan') || 'Media de las tres PEC; todas pesan lo mismo.'},
+        {code:'pr >= 5.0', st:reqStatus(R.avg, nR, 5, R.graded), txt:needTxt(nR, R.graded, 'las prácticas que quedan') || 'PR 1 y PR 2 valen un 20 % del bloque cada una; PR 3 y PR 4, un 30 %.'},
+        {code:'pf >= 4.0', st:pfReq(pfA), txt:'Si no te presentas, suspenso (3). Con menos de 4, la nota final es la de la prueba.'},
+        {code:'nota >= 5.0', st: fin != null ? (fin >= 5 ? ['ok','Cumplido'] : ['crit','No cumplido']) : ['','Pendiente'], txt:'Nota final = 70 % EC + 30 % prueba final.'}
+      ]
+    };
+  }
+
+  function computeIS(t){
+    const P = block('is','pec'), R = block('is','pr'), pfA = byId('is-pf');
+    const pf = st(pfA).nota;
+    const ec = P.avg != null && R.avg != null ? 0.3 * P.avg + 0.7 * R.avg : null;
+    const pr1 = notaEff(byId('is-pr1')), pr2 = st(byId('is-pr2')).nota;
+    const prMinOk = pr1 != null && pr2 != null && pr1 >= 3.5 && pr2 >= 3.5;
+    const passEC = ec != null && ec >= 5 && prMinOk;
+    const allGraded = P.wr === 0 && R.wr === 0;
+    let fin = null, finalSub;
+    if (allGraded && !passEC) { finalSub = 'EC no superada: la nota final sería No presentado'; }
+    else if (allGraded && pf != null) {
+      if (pf < 4) { fin = pf; finalSub = 'PF por debajo de 4: cuenta solo la PF'; }
+      else { fin = 0.7 * ec + 0.3 * pf; finalSub = '70 % EC + 30 % prueba final'; }
+    } else finalSub = !P.graded && !R.graded ? 'Aún no hay notas' : !allGraded ? 'Faltan notas de la evaluación continua' : 'Falta la nota de la prueba final';
+    const formula =
+      'ec   = 0.3 * <span class="k">pec</span> + 0.7 * <span class="k">pr</span>;   <span class="cm">// pec: 40/40/20 · pr: 40/60</span>\n' +
+      '     = 0.3 * <span class="v">' + vv(P.avg) + '</span> + 0.7 * <span class="v">' + vv(R.avg) + '</span>' + (ec != null ? ' = <span class="v">' + c(ec) + '</span>' : '') + '\n' +
+      'nota = 0.7 * <span class="k">ec</span> + 0.3 * <span class="k">pf</span>;   <span class="cm">// si ec >= 5.0 y pf >= 4.0</span>';
+    const secured = 0.3 * P.sum / P.total + 0.7 * R.sum / R.total;
+    const remaining = 0.3 * P.wr / P.total + 0.7 * R.wr / R.total;
+    const nEC = remaining > 0 ? (5 - secured) / remaining : null;
+    const rn = recNeed(t);
+    let need;
+    if (!P.graded && !R.graded) need = 'Escribe la nota de cada entrega cuando la publiquen. Necesitas un 5 de EC para poder presentarte a la prueba final.';
+    else if (rn === 'obligatoria' && st(byId('is-rec')).nota == null) need = 'La PR 1 no llega al 3,5: la <b>recuperación de la PR 1 es obligatoria</b>.';
+    else if (fin != null) need = fin >= 5 ? 'Todas las notas puestas: <b>aprobado</b>.' : 'Todas las notas puestas.';
+    else if (allGraded) need = !passEC ? 'Con estas notas la EC no llega al 5 (o alguna práctica está por debajo de 3,5): no podrías presentarte a la PF.' : pfNeedTxt(ec);
+    else if (nEC != null && nEC > 10) need = 'Con lo que queda ya no se llega al 5 de EC.';
+    else if (nEC != null && nEC <= 0) need = 'El 5 de EC está <b>asegurado</b> (mientras cada práctica llegue al 3,5).';
+    else need = 'Para llegar al 5 de EC necesitas una media de <b>' + num(nEC) + '</b> en lo que queda.';
+    let prSt;
+    if (pr1 != null && pr1 < 3.5) prSt = ['crit', rn === 'obligatoria' ? 'Recuperar PR 1' : 'No cumplido'];
+    else if (pr2 != null && pr2 < 3.5) prSt = ['crit','No cumplido'];
+    else if (prMinOk) prSt = ['ok','Cumplido'];
+    else if (rn === 'obligatoria') prSt = ['crit','Recuperar PR 1'];
+    else prSt = ['', (pr1 != null ? 1 : 0) + (pr2 != null ? 1 : 0) + ' de 2 con nota'];
+    return {
+      formula, fin, finalSub, need,
+      blocks: blk('PEC · 30 % EC', 'is', P.avg, P.graded + ' de 3 con nota') + blk('Prácticas · 70 % EC', 'is', R.avg, R.graded + ' de 2 con nota') + blk('EC · 70 %', 'is', ec, pf == null ? 'PF sin nota' : 'PF: ' + num(pf)),
+      summary: fin != null ? {v:fin, sub:'nota final'} : ec != null ? {v:ec, sub: allGraded ? 'nota de EC (falta PF)' : 'EC estimada'} : {v:null, sub:'nota final estimada'},
+      reqs: [
+        {code:'pr1 >= 3.5 && pr2 >= 3.5', st:prSt, txt:'Cada práctica por separado. Si la PR 1 no llega, hay recuperación (nota máxima 5).'},
+        {code:'ec >= 5.0', st:reqStatus(ec, allGraded ? null : nEC, 5, P.graded || R.graded), txt:'Sin un 5 en la EC no puedes hacer la prueba final y la nota es No presentado.'},
+        {code:'pf >= 4.0', st:pfReq(pfA), txt:'Prueba síncrona con SMOWL. Con menos de 4, la nota final es la de la prueba.'},
+        {code:'nota >= 5.0', st: fin != null ? (fin >= 5 ? ['ok','Cumplido'] : ['crit','No cumplido']) : ['','Pendiente'], txt:'Nota final = 70 % EC + 30 % prueba final.'}
+      ]
+    };
+  }
+  function letter(x){ return x >= 9 ? 'A' : x >= 7 ? 'B' : x >= 5 ? 'C+' : x >= 3 ? 'C-' : 'D'; }
+  const BAND = {A:'9 o 10', B:'7 u 8', 'C+':'5 o 6', 'C-':'3 o 4', D:'0 a 2'};
+  function computeLG(t){
+    const P = block('lg','pec'), pfA = byId('lg-pf');
+    const pf = st(pfA).nota, ec = P.avg, allGraded = P.wr === 0;
+    const list = inSubj('lg','pec');
+    const delivered = list.filter(isDone).length, closed = list.filter(a => t > ymd(a.fin)).length;
+    const np = closed === list.length && delivered < 3;
+    let fin = null, finalSub;
+    if (np) finalSub = 'Menos de tres PEC entregadas: No presentado';
+    else if (allGraded && ec < 5) { fin = ec; finalSub = 'EC no superada: la nota final es la de la EC'; }
+    else if (allGraded && pf != null) {
+      if (pf < 4) { fin = pf; finalSub = 'PF por debajo de 4: cuenta solo la PF'; }
+      else { fin = 0.5 * ec + 0.5 * pf; finalSub = '50 % EC + 50 % prueba final'; }
+    } else finalSub = !P.graded ? 'Aún no hay notas' : !allGraded ? 'Faltan notas de la evaluación continua' : 'Falta la nota de la prueba final';
+    const formula =
+      'ec   = media(<span class="k">pec1</span> … <span class="k">pec6</span>);   <span class="cm">// cada PEC, 1/6</span>\n' +
+      '     = <span class="v">' + vv(ec) + '</span>' + (ec != null ? '   <span class="cm">// letra ' + letter(ec) + ' → ' + BAND[letter(ec)] + '</span>' : '') + '\n' +
+      'nota = 0.5 * <span class="k">ec</span> + 0.5 * <span class="k">pf</span>;   <span class="cm">// si ec >= 5.0 y pf >= 4.0</span>';
+    const nP = needBlock(P, 5);
+    let need;
+    if (!P.graded) need = 'Escribe la nota de cada PEC cuando la publiquen. Necesitas un 5 de EC para poder presentarte a la prueba final.';
+    else if (fin != null) need = ec < 5 ? 'La EC no llega al 5: no puedes hacer la PF.' : fin >= 5 ? 'Todas las notas puestas: <b>aprobado</b>.' : 'Todas las notas puestas.';
+    else if (allGraded) { const x = 10 - ec; need = x > 10 ? 'Con esta EC no llegas al 5.' : 'Con esta EC, en la prueba final necesitas al menos un <b>' + num(Math.max(4, x)) + '</b>. Ojo: la EC se redondea a su letra (' + letter(ec) + ' = ' + BAND[letter(ec)] + ').'; }
+    else if (nP > 10) need = 'Con lo que queda ya no se llega al 5 de EC.';
+    else if (nP <= 0) need = 'El 5 de EC está <b>asegurado</b>.';
+    else need = 'Para llegar al 5 de EC necesitas una media de <b>' + num(nP) + '</b> en las PEC que quedan.';
+    const lateCount = list.filter(a => !isDone(a) && t > ymd(a.fin)).length;
+    return {
+      formula, fin, finalSub, need,
+      blocks: blk('EC · 50 %', 'lg', ec, P.graded + ' de 6 con nota') + '<div class="blk"><span>Letra</span><b>' + (ec == null ? '—' : letter(ec)) + '</b><span>' + (ec == null ? 'según la media' : BAND[letter(ec)]) + '</span></div>' + blk('PF · 50 %', 'lg', pf, pf == null ? 'sin nota' : 'mínimo 4'),
+      summary: fin != null ? {v:fin, sub:'nota final'} : ec != null ? {v:ec, sub: allGraded ? 'nota de EC (falta PF)' : 'EC estimada'} : {v:null, sub:'nota final estimada'},
+      reqs: [
+        {code:'entregadas(PEC) >= 3', st: delivered >= 3 ? ['ok','Cumplido'] : np ? ['crit','No cumplido'] : ['', delivered + ' de 6'], txt:'Con menos de tres, la EC es No presentado. Cada PEC sin entregar cuenta como D' + (lateCount ? ' (llevas ' + lateCount + ' sin entregar).' : '.')},
+        {code:'ec >= 5.0', st:reqStatus(ec, allGraded ? null : nP, 5, P.graded), txt:'Las seis PEC pesan lo mismo. Sin un 5 no puedes presentarte a la prueba final.'},
+        {code:'pf >= 4.0', st:pfReq(pfA), txt:'Prueba síncrona con supervisión en línea. Con menos de 4, la nota final es la de la prueba.'},
+        {code:'nota >= 5.0', st: fin != null ? (fin >= 5 ? ['ok','Cumplido'] : ['crit','No cumplido']) : ['','Pendiente'], txt:'Nota final = 50 % EC + 50 % prueba final.'}
+      ]
+    };
+  }
+  const COMPUTE = {fp:computeFP, cc:computeCC, is:computeIS, lg:computeLG};
+
+  /* ================= RENDER ================= */
+  function statusOf(a, t){
+    const s = st(a);
+    if (s.nota != null) return {cls: s.nota >= 5 ? 'ok' : 'warn', txt:'Nota ' + num(s.nota)};
+    if (a.kind === 'ini') return isDone(a) ? {cls:'ok', txt:'Hecho'} : {cls:'warn', txt:'Hazlo ya'};
+    if (a.kind === 'rec') {
+      const rn = recNeed(t);
+      if (isDone(a)) return {cls:'ok', txt:'Entregada'};
+      if (rn === 'no') return {cls:'ok', txt:'No hace falta'};
+      if (rn === 'depende') return {cls:'', txt:'Solo si PR 1 < 3,5'};
+      if (!s.fecha) return {cls: rn === 'obligatoria' ? 'crit' : '', txt: rn === 'obligatoria' ? 'Obligatoria · fecha por confirmar' : 'Opcional · fecha por confirmar'};
+    }
+    if (a.userDate) {
+      if (a.kind === 'pf' && !s.fecha) return {cls:'', txt:'Fecha por confirmar'};
+      const n = days(t, ymd(s.fecha));
+      return n < 0 ? {cls:'', txt: a.kind === 'pf' ? 'Pendiente de nota' : 'Fecha pasada'} : n === 0 ? {cls:'warn', txt:'Es hoy'} : {cls: n <= 7 ? 'warn' : 'open', txt: n === 1 ? 'Mañana' : 'Dentro de ' + n + ' días'};
+    }
+    if (isDone(a)) return {cls:'ok', txt:'Entregada'};
+    const fin = ymd(a.fin), ini = a.ini ? ymd(a.ini) : null, partial = s.partes.some(Boolean);
+    if (t > fin) return {cls:'crit', txt: partial ? 'Vencida · incompleta' : 'Vencida'};
+    if (!ini || t >= ini) { const n = days(t, fin); return {cls: n <= 2 ? 'warn' : 'open', txt: n === 0 ? 'Vence hoy' : n === 1 ? 'Vence mañana' : 'Abierta · quedan ' + n + ' días'}; }
+    const n = days(t, ini);
+    return {cls:'', txt: n === 1 ? 'Se abre mañana' : 'Se abre en ' + n + ' días'};
+  }
+
+  function refresh(){
+    const t = today();
+    const d = days(START, t), totalWeeks = Math.ceil((days(START, END) + 1) / 7);
+    document.getElementById('weekText').textContent = d < 0 ? 'Empieza en ' + (-d) + ' días' : t > END ? 'Semestre terminado' : 'Semana ' + (Math.floor(d / 7) + 1) + ' de ' + totalWeeks;
+    document.getElementById('weekMeter').style.width = Math.max(2, pct(t)) + '%';
+
+    const partsBy = {}; ORDER.forEach(k => partsBy[k] = [0,0]);
+    ACTS.forEach(a => {
+      const r = rows[a.id], s = st(a), stt = statusOf(a, t);
+      r.pill.className = 'pill ' + stt.cls; r.pill.textContent = stt.txt;
+      const counts = a.kind === 'pec' || a.kind === 'pr';
+      r.boxes.forEach((cb, i) => { cb.checked = !!s.partes[i]; if (counts) { partsBy[a.s][1]++; if (s.partes[i]) partsBy[a.s][0]++; } });
+      if (r.inp && document.activeElement !== r.inp && r.inp.getAttribute('aria-invalid') !== 'true') r.inp.value = s.nota == null ? '' : s.nota.toLocaleString('es-ES', {maximumFractionDigits:2});
+      r.li.querySelectorAll('.plt').forEach(lt => { lt.textContent = pLetter(a, Number(lt.dataset.i)); });
+      r.pins.forEach((pin, i) => { if (document.activeElement !== pin && pin.getAttribute('aria-invalid') !== 'true') pin.value = s.notas[i] == null ? '' : s.notas[i].toLocaleString('es-ES', {maximumFractionDigits:2}); });
+      if (r.dateInp && document.activeElement !== r.dateInp) r.dateInp.value = s.fecha || '';
+      const b = bars[a.id];
+      if (!b) return;
+      if (a.userDate) {
+        const show = !!s.fecha && (a.kind === 'pf' || recNeed(t) !== 'no');
+        b.hidden = !show;
+        if (show) { place(b, s.fecha, s.fecha); b.title = SUBJ[a.s].short + ' · ' + label(a) + ' · ' + fdate(s.fecha); }
+      }
+      b.classList.toggle('done', isDone(a));
+      b.classList.toggle('late', !isDone(a) && !!a.fin && t > ymd(a.fin));
+    });
+    const tbd = ACTS.filter(a => a.kind === 'pf' && !st(a).fecha).map(a => SUBJ[a.s].abbr);
+    pfTbd.hidden = !tbd.length;
+    pfTbd.textContent = (tbd.length > 1 ? tbd.slice(0, -1).join(', ') + ' y ' + tbd[tbd.length - 1] + ': fechas' : tbd.join('') + ': fecha') + ' por confirmar';
+    weeks.forEach(w => {
+      const list = ACTS.filter(a => due(a) && (a.kind !== 'rec' || ['obligatoria','opcional'].includes(recNeed(t))) && ymd(due(a)) >= w.from && ymd(due(a)) < w.to);
+      const n = list.length;
+      w.cell.className = 'wk' + (n >= 4 ? ' l4' : n === 3 ? ' l3' : n === 2 ? ' l2' : '');
+      w.cell.textContent = n ? n : '';
+      w.cell.title = 'Semana del ' + fdate(w.from.getFullYear() + '-' + String(w.from.getMonth() + 1).padStart(2, '0') + '-' + String(w.from.getDate()).padStart(2, '0')) + ': ' + (n ? list.map(a => SUBJ[a.s].abbr + ' ' + label(a)).join(', ') : 'sin entregas');
+    });
+
+    const tp = pct(t);
+    todayLine.hidden = t < START || t > END;
+    todayLine.style.left = tp + '%';
+    todayLine.classList.toggle('edge-l', tp < 4);
+    todayLine.classList.toggle('edge-r', tp > 96);
+
+    axis.querySelectorAll('.evdot').forEach(n => n.remove());
+    const up = upcoming(t);
+    up.forEach(e => {
+      const dot = el('span', {class:'evdot', title: evTag(e).short + ' · ' + e.titulo + ' · ' + evWhen(e)});
+      dot.style.left = pct(ymd(e.fecha)) + '%'; dot.style.background = evTag(e).color;
+      axis.appendChild(dot);
+    });
+    ORDER.forEach(sid => {
+      const mine = up.filter(e => e.s === sid);
+      ui[sid].evsec.hidden = !mine.length;
+      ui[sid].evlist.innerHTML = mine.map(e => evLi(e, t, false)).join('');
+    });
+
+    const res = {};
+    ORDER.forEach(sid => {
+      const U = ui[sid], R = res[sid] = COMPUTE[sid](t);
+      U.formula.innerHTML = R.formula;
+      U.final.textContent = R.fin == null ? '—' : num(R.fin);
+      U.final.style.color = R.fin == null ? '' : R.fin >= 5 ? 'var(--ok)' : 'var(--crit)';
+      U.finalSub.textContent = R.finalSub;
+      U.blocks.innerHTML = R.blocks;
+      U.need.innerHTML = R.need;
+      U.reqs.innerHTML = R.reqs.map(i => '<li class="req"><code>' + i.code + '</code><span class="pill ' + i.st[0] + '">' + i.st[1] + '</span><p>' + i.txt + '</p></li>').join('');
+      U.parts.textContent = partsBy[sid][0] + ' de ' + partsBy[sid][1] + ' partes entregadas';
+    });
+    renderNext(t);
+    renderHow(res, partsBy);
+    renderPlan(t);
+    renderHorario();
+  }
+
+  function relevant(a, t){ return a.kind === 'rec' ? ['obligatoria','opcional'].includes(recNeed(t)) : a.kind !== 'ini'; }
+  function renderNext(t){
+    const box = document.getElementById('nextBody');
+    const pending = ACTS.filter(a => due(a) && relevant(a, t) && !isDone(a) && ymd(due(a)) >= t)
+      .sort((a, b) => (ymd(due(a)) - ymd(due(b))) || ((a.ini ? ymd(a.ini) : 0) - (b.ini ? ymd(b.ini) : 0)));
+    const overdue = ACTS.filter(a => a.fin && !isDone(a) && ymd(a.fin) < t && st(a).nota == null);
+    let html = '';
+    const soon = upcoming(t).filter(e => days(t, ymd(e.fecha)) <= 14).slice(0, 3);
+    if (soon.length) html += '<div class="agenda"><span class="label">Agenda</span><ul class="evlist">' + soon.map(e => evLi(e, t, true)).join('') + '</ul></div>';
+    const ci = byId('is-ci');
+    if (!isDone(ci)) html += '<p class="urgent"><span><b>Hazlo ya:</b> el cuestionario inicial de Ingeniería del software. No cuenta para nota, pero sin él no puedes acceder a los contenidos.</span><button class="btn sm" type="button" data-done="is-ci">Ya lo hice</button></p>';
+    if (!pending.length) {
+      html += '<div class="next-title"><b>' + (overdue.length ? 'Nada con plazo abierto' : 'Todo entregado') + '</b></div><p class="facts">' +
+        (overdue.length ? 'Hay ' + overdue.length + ' entrega(s) vencidas sin marcar.' : 'No quedan entregas pendientes con fecha.') + '</p>';
+      box.innerHTML = html; return;
+    }
+    const a = pending[0], s = st(a);
+    const nFin = days(t, ymd(due(a)));
+    html += '<div class="next-title"><span class="subj c-' + a.s + '">' + SUBJ[a.s].abbr + '</span><a class="golink" href="#act-' + a.id + '" data-go="' + a.id + '"><b class="c-' + a.s + '">' + label(a) + '</b></a><span>' + (a.userDate ? SUBJ[a.s].short : a.partes.join(' + ')) + '</span></div>';
+    html += '<div class="count"><span class="big">' + (nFin === 0 ? 'Hoy' : nFin) + '</span><small>' + (nFin === 0 ? 'es el último día' : nFin === 1 ? 'día para la entrega' : 'días para la entrega') + '</small></div>';
+    html += '<div class="facts">';
+    if (!a.userDate && a.ini) {
+      const nIni = days(t, ymd(a.ini));
+      html += nIni > 0 ? '<span>Se abre el <b>' + fdate(a.ini) + '</b> (en ' + nIni + (nIni === 1 ? ' día' : ' días') + ')</span>' : '<span>Abierta desde el ' + fdate(a.ini) + '</span>';
+    }
+    if (!a.userDate) {
+      const missing = a.partes.filter((p, i) => !s.partes[i]);
+      if (missing.length && missing.length < a.partes.length) html += '<span>Te falta: <b>' + missing.join(', ') + '</b></span>';
+      if (a.title) html += '<span>' + a.title + '</span>';
+    }
+    html += '<span>' + (a.kind === 'pf' ? 'Fecha' : 'Entrega') + ': <b>' + fdate(due(a)) + '</b>' + (a.fw ? ' · vale un <b>' + pctTxt(a.fw) + ' %</b> de la nota' : '') + '</span></div>';
+    if (a.partes.length) html += '<div><button class="btn sm" type="button" data-done="' + a.id + '">Ya la entregué</button></div>';
+    const rest = pending.slice(1, 6);
+    if (rest.length) {
+      html += '<ul class="queue">' + rest.map(b => {
+        const n = days(t, ymd(due(b)));
+        return '<li><span class="subj c-' + b.s + '">' + SUBJ[b.s].abbr + '</span><span class="what"><a class="golink" href="#act-' + b.id + '" data-go="' + b.id + '"><b>' + label(b) + '</b></a> <small>· ' + fdate(due(b)) + '</small></span><span class="when">' + (n === 0 ? 'hoy' : n === 1 ? 'mañana' : n + ' días') + '</span></li>';
+      }).join('') + '</ul>';
+    }
+    if (overdue.length) html += '<p class="facts" style="color:var(--crit)">' + overdue.length + ' entrega(s) vencidas sin marcar como entregadas.</p>';
+    box.innerHTML = html;
+  }
+
+  document.getElementById('nextBody').addEventListener('click', e => {
+    const done = e.target.closest('[data-done]'), go = e.target.closest('[data-go]');
+    if (done) { const a = byId(done.getAttribute('data-done')); if (a) { st(a).partes = a.partes.map(() => true); saveAct(a); refresh(); } }
+    else if (go) { e.preventDefault(); const a = byId(go.getAttribute('data-go')); if (a) goTo(a); }
+  });
+  const howBody = document.getElementById('howBody');
+  const how = {};
+  ORDER.forEach(sid => {
+    const b = el('button', {class:'how', 'data-s':sid, type:'button'});
+    b.innerHTML = '<span class="how-name c-' + sid + '">' + SUBJ[sid].name + '</span><span class="how-grade"><b>—</b><small></small></span><span class="how-prog"><span class="meter"><i style="width:0%"></i></span><span class="pt"></span></span>';
+    b.addEventListener('click', () => { selectTab(sid); ui[sid].tab.scrollIntoView({behavior:'smooth', block:'start'}); });
+    howBody.appendChild(b);
+    how[sid] = b;
+  });
+  function renderHow(res, partsBy){
+    ORDER.forEach(sid => {
+      const b = how[sid], sm = res[sid].summary, [dn, tot] = partsBy[sid];
+      const g = b.querySelector('.how-grade b');
+      g.textContent = sm.v == null ? '—' : num(sm.v);
+      g.style.color = sm.v == null ? '' : sm.v >= 5 ? 'var(--ok)' : 'var(--crit)';
+      b.querySelector('.how-grade small').textContent = sm.sub;
+      b.querySelector('.meter i').style.width = (tot ? dn / tot * 100 : 0) + '%';
+      b.querySelector('.pt').textContent = dn + ' de ' + tot + ' partes entregadas';
+    });
+  }
+
+  function refreshTemario(){
+    ORDER.forEach(sid => {
+      let n = 0;
+      ui[sid].tm.forEach(({id, cb}) => { cb.checked = !!state.temario[sid][id]; if (cb.checked) n++; });
+      ui[sid].tmCount.textContent = n + ' de ' + ui[sid].tm.length;
+    });
+  }
+
+  /* ================= INICIALIZAR Y CARGAR DATOS ================= */
+  function loadInitialData(){
+    // Actividades
+    const storedActs = getLocal('col_actividades', SEED.actividades);
+    resetActs();
+    Object.keys(storedActs).forEach(id => {
+      const a = byId(id);
+      if (!a) return;
+      const b = storedActs[id] || {};
+      const o = {
+        partes: a.partes.map((_, i) => !!(Array.isArray(b.partes) && b.partes[i])),
+        nota: typeof b.nota === 'number' && b.nota >= 0 && b.nota <= 10 ? b.nota : null
+      };
+      if (partGrades(a)) o.notas = a.partes.map((_, i) => { const v = Array.isArray(b.notas) ? b.notas[i] : null; return typeof v === 'number' && v >= 0 && v <= partMax(a, i) ? v : null; });
+      if (a.userDate) o.fecha = typeof b.fecha === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(b.fecha) ? b.fecha : null;
+      state.acts[a.id] = o;
+    });
+
+    // Horarios
+    const storedHorarios = getLocal('col_horario', SEED.horario);
+    horario = {};
+    Object.values(storedHorarios).filter(hValid).forEach(d => horario[d.fecha] = d);
+
+    // Registro
+    const storedRegistro = getLocal('col_registro', SEED.registro);
+    registro = {};
+    Object.values(storedRegistro).filter(r => r && /^\d{4}-\d{2}-\d{2}$/.test(r.fecha || '') && r.min && typeof r.min === 'object').forEach(r => registro[r.fecha] = r);
+
+    // Eventos
+    const storedEventos = getLocal('col_eventos', SEED.eventos);
+    eventos = Object.values(storedEventos).filter(evValid);
+
+    // Temarios
+    ORDER.forEach(sid => {
+      const docName = SUBJ[sid].temarioDoc;
+      const tData = getLocal('doc_temario/' + docName, SEED.temario[sid] || SEED.temario[docName]);
+      state.temario[sid] = {};
+      if (tData && tData.hechos) {
+        for (const k in tData.hechos) {
+          if (tData.hechos[k]) state.temario[sid][k] = true;
+        }
+      }
+    });
+  }
+
+  loadInitialData();
+  selectTab(current);
+  refresh();
+  refreshTemario();
+  initTimer();
+  setInterval(refresh, 60 * 60 * 1000);
+  setInterval(renderHorario, 60 * 1000);
+})();
+</script>
+</body>
+</html>
