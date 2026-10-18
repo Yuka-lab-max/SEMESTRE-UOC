@@ -1779,6 +1779,166 @@ h3{font-size:18px;font-weight:700;letter-spacing:-.005em}
   initTimer();
   setInterval(refresh, 60 * 60 * 1000);
   setInterval(renderHorario, 60 * 1000);
+  // ================= ASISTENTE VIRTUAL GEMINI UOC =================
+(function() {
+  const style = document.createElement('style');
+  style.textContent = `
+    #uoc-ai-widget { position: fixed; bottom: 24px; right: 24px; z-index: 9999; font-family: system-ui, -apple-system, sans-serif; }
+    #uoc-ai-toggle { width: 56px; height: 56px; border-radius: 50%; background: #131722; border: 1.5px solid #e879f9; box-shadow: 0 4px 20px rgba(232, 121, 249, 0.25); color: #f8fafc; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s, border-color 0.2s; }
+    #uoc-ai-toggle:hover { transform: scale(1.06); border-color: #60a5fa; }
+    #uoc-ai-panel { display: none; flex-direction: column; position: absolute; bottom: 70px; right: 0; width: 360px; height: 500px; max-width: calc(100vw - 48px); background: #131722; border: 1px solid #262c3a; border-radius: 14px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6); overflow: hidden; }
+    #uoc-ai-panel.open { display: flex; }
+    .uoc-ai-header { padding: 12px 16px; background: #0d1017; border-bottom: 1px solid #262c3a; display: flex; justify-content: space-between; align-items: center; color: #f1f5f9; font-weight: 600; font-size: 14px; }
+    .uoc-ai-header-actions button { background: transparent; border: none; color: #94a3b8; cursor: pointer; font-size: 14px; margin-left: 8px; padding: 4px; }
+    .uoc-ai-header-actions button:hover { color: #f8fafc; }
+    #uoc-ai-messages { flex: 1; padding: 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 13.5px; line-height: 1.45; }
+    .uoc-msg { max-width: 85%; padding: 10px 13px; border-radius: 12px; word-wrap: break-word; white-space: pre-wrap; }
+    .uoc-msg.ai { background: #1e2433; color: #e2e8f0; align-self: flex-start; border-bottom-left-radius: 3px; }
+    .uoc-msg.user { background: #60a5fa; color: #090d16; font-weight: 500; align-self: flex-end; border-bottom-right-radius: 3px; }
+    .uoc-ai-input-area { padding: 10px; background: #0d1017; border-top: 1px solid #262c3a; display: flex; gap: 8px; }
+    #uoc-ai-input { flex: 1; background: #161b26; border: 1px solid #2e3646; border-radius: 8px; padding: 9px 12px; color: #f8fafc; font-size: 13.5px; outline: none; }
+    #uoc-ai-input:focus { border-color: #60a5fa; }
+    #uoc-ai-send { background: #7c9aff; color: #090d16; border: none; border-radius: 8px; padding: 0 14px; font-weight: 600; cursor: pointer; }
+    #uoc-ai-send:disabled { opacity: 0.5; cursor: not-allowed; }
+  `;
+  document.head.appendChild(style);
+
+  const widget = document.createElement('div');
+  widget.id = 'uoc-ai-widget';
+  widget.innerHTML = `
+    <div id="uoc-ai-panel">
+      <div class="uoc-ai-header">
+        <span>✨ Asistente UOC</span>
+        <div class="uoc-ai-header-actions">
+          <button id="uoc-ai-key-btn" title="Cambiar API Key">🔑</button>
+          <button id="uoc-ai-clear-btn" title="Limpiar chat">🗑️</button>
+          <button id="uoc-ai-close-btn" title="Cerrar">✖</button>
+        </div>
+      </div>
+      <div id="uoc-ai-messages">
+        <div class="uoc-msg ai">¡Hola! Veo tus datos de estudio, entregas, eventos y temarios en tiempo real. ¿Planificamos los bloques de hoy o resolvemos dudas?</div>
+      </div>
+      <form class="uoc-ai-input-area" id="uoc-ai-form">
+        <input type="text" id="uoc-ai-input" placeholder="Pregúntame sobre entregas o dudas..." autocomplete="off" />
+        <button type="submit" id="uoc-ai-send">Enviar</button>
+      </form>
+    </div>
+    <button id="uoc-ai-toggle" title="Abrir Asistente UOC">✨</button>
+  `;
+  document.body.appendChild(widget);
+
+  const toggleBtn = document.getElementById('uoc-ai-toggle');
+  const panel = document.getElementById('uoc-ai-panel');
+  const closeBtn = document.getElementById('uoc-ai-close-btn');
+  const keyBtn = document.getElementById('uoc-ai-key-btn');
+  const clearBtn = document.getElementById('uoc-ai-clear-btn');
+  const form = document.getElementById('uoc-ai-form');
+  const input = document.getElementById('uoc-ai-input');
+  const sendBtn = document.getElementById('uoc-ai-send');
+  const messagesContainer = document.getElementById('uoc-ai-messages');
+
+  let chatHistory = [];
+
+  toggleBtn.addEventListener('click', () => {
+    panel.classList.toggle('open');
+    if (panel.classList.contains('open')) input.focus();
+  });
+  closeBtn.addEventListener('click', () => panel.classList.remove('open'));
+
+  function configurarApiKey(forzar = false) {
+    let key = localStorage.getItem('GEMINI_API_KEY');
+    if (!key || forzar) {
+      const nuevaKey = prompt('Pega tu API Key de Google AI Studio (se guardará solo en tu navegador):', key || '');
+      if (nuevaKey !== null && nuevaKey.trim() !== '') {
+        localStorage.setItem('GEMINI_API_KEY', nuevaKey.trim());
+        return nuevaKey.trim();
+      }
+    }
+    return key;
+  }
+
+  keyBtn.addEventListener('click', () => configurarApiKey(true));
+
+  clearBtn.addEventListener('click', () => {
+    chatHistory = [];
+    messagesContainer.innerHTML = '<div class="uoc-msg ai">Conversación reiniciada. ¿En qué nos concentramos ahora?</div>';
+  });
+
+  // Extrae tanto el texto de la pantalla como tus variables internas (state, registro, eventos)
+  function leerContextoDelPanel() {
+    let datosInternos = '';
+    try {
+      datosInternos = JSON.stringify({
+        estadoEntregasYTemario: typeof state !== 'undefined' ? state : null,
+        registroHoras: typeof registro !== 'undefined' ? registro : null,
+        eventosAgenda: typeof eventos !== 'undefined' ? eventos : null
+      });
+    } catch (e) {}
+    const textoVisible = document.body.innerText.substring(0, 3000);
+    return `Texto en pantalla:\n${textoVisible}\n\nVariables internas de la app:\n${datosInternos}`;
+  }
+
+  function agregarMensaje(texto, tipo) {
+    const div = document.createElement('div');
+    div.className = `uoc-msg ${tipo}`;
+    div.textContent = texto;
+    messagesContainer.appendChild(div);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    return div;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const textoUsuario = input.value.trim();
+    if (!textoUsuario) return;
+
+    const apiKey = configurarApiKey();
+    if (!apiKey) {
+      agregarMensaje('Necesitas configurar tu API Key (icono 🔑 arriba) para hablar conmigo.', 'ai');
+      return;
+    }
+
+    input.value = '';
+    agregarMensaje(textoUsuario, 'user');
+    chatHistory.push({ role: 'user', parts: [{ text: textoUsuario }] });
+
+    sendBtn.disabled = true;
+    const msgCargando = agregarMensaje('Pensando...', 'ai');
+
+    const instruccionesSistema = `Eres mi asistente personal de estudio integrado en mi web del semestre de la UOC.
+    Aquí tienes los datos en vivo de mi panel:
+    ${leerContextoDelPanel()}
+
+    Reglas:
+    1. Sé conciso, cercano y directo.
+    2. Usa los datos reales de mi pantalla y variables (registro de horas, entregas PR/PEC, temarios y eventos) para aconsejarme.
+    3. Cuando me ayudes con ejercicios de Lógica o Programación, guíame paso a paso con pistas interactivas para que yo lo deduzca en mi cuaderno o código, sin darme la respuesta final de golpe.`;
+
+    try {
+      const respuesta = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system_instruction: { parts: [{ text: instruccionesSistema }] },
+          contents: chatHistory
+        })
+      });
+
+      const datos = await respuesta.json();
+      if (datos.error) throw new Error(datos.error.message);
+
+      const textoRespuesta = datos.candidates[0].content.parts[0].text;
+      msgCargando.textContent = textoRespuesta;
+      chatHistory.push({ role: 'model', parts: [{ text: textoRespuesta }] });
+    } catch (error) {
+      msgCargando.textContent = '⚠️ Error: ' + error.message + '. Revisa tu API Key en el icono 🔑.';
+      chatHistory.pop();
+    } finally {
+      sendBtn.disabled = false;
+      input.focus();
+    }
+  });
+})();
 })();
 </script>
 </body>
